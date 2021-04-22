@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
@@ -11,9 +11,10 @@ namespace Reductech.EDR.Connectors.FileSystem
 {
 
 /// <summary>
-/// Returns true if the file in the specified path exists, false otherwise
+/// Returns whether a file on the file system exists.
 /// </summary>
-public class CheckFileExists : CompoundStep<bool>
+[Alias("DoesFileExist")]
+public class FileExists : CompoundStep<bool>
 {
     /// <summary>
     /// The path to the file to check.
@@ -35,26 +36,12 @@ public class CheckFileExists : CompoundStep<bool>
         if (pathResult.IsFailure)
             return pathResult.ConvertFailure<bool>();
 
-        var r = stateMonad.FileSystemHelper.DoesFileExist(pathResult.Value);
+        var r = stateMonad.ExternalContext.FileSystemHelper.File.Exists(pathResult.Value);
         return r;
     }
 
     /// <inheritdoc />
-    public override IStepFactory StepFactory => CheckFileExistsStepFactory.Instance;
-}
-
-/// <summary>
-/// Returns true if the file in the specified path exists, false otherwise
-/// </summary>
-public class CheckFileExistsStepFactory : SimpleStepFactory<CheckFileExists, bool>
-{
-    private CheckFileExistsStepFactory() { }
-
-    /// <summary>
-    /// An instance of DoesFileExistStepFactory
-    /// </summary>
-    public static SimpleStepFactory<CheckFileExists, bool> Instance { get; } =
-        new CheckFileExistsStepFactory();
+    public override IStepFactory StepFactory { get; } = new SimpleStepFactory<FileExists, bool>();
 }
 
 }

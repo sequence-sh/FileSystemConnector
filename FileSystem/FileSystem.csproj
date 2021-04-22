@@ -27,7 +27,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Reductech.EDR.Core" Version="0.4.0" />
+    <ProjectReference Include="..\..\core\Core\Core.csproj" />
   </ItemGroup>
 
 </Project>
