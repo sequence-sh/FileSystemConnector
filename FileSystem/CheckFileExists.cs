@@ -7,7 +7,7 @@ using Reductech.EDR.Core.Attributes;
 using Reductech.EDR.Core.Internal;
 using Reductech.EDR.Core.Internal.Errors;
 
-namespace Reductech.Templates.EDRConnector
+namespace Reductech.EDR.Connectors.FileSystem
 {
 
 /// <summary>

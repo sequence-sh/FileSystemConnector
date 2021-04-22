@@ -3,7 +3,7 @@ using Reductech.EDR.Core.TestHarness;
 using Reductech.EDR.Core.Util;
 using static Reductech.EDR.Core.TestHarness.StaticHelpers;
 
-namespace Reductech.Templates.EDRConnector.Tests
+namespace Reductech.EDR.Connectors.FileSystem.Tests
 {
 
 public partial class CheckFileExistsTests : StepTestBase<CheckFileExists, bool>

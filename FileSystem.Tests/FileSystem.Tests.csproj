@@ -6,11 +6,11 @@
     <IsPublishable>false</IsPublishable>
     <IsTestProject>true</IsTestProject>
     <Nullable>enable</Nullable>
-    <RootNamespace>Reductech.Templates.EDRConnector.Tests</RootNamespace>
+    <RootNamespace>Reductech.EDR.Connectors.FileSystem.Tests</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup>
-    <RepositoryUrl>https://gitlab.com/reductech/templates/edr-connector</RepositoryUrl>
+    <RepositoryUrl>https://gitlab.com/reductech/edr/connectors/filesystem</RepositoryUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <Authors>Reductech</Authors>
     <Company>Reductech</Company>
@@ -36,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EDRConnector\EDRConnector.csproj" />
+    <ProjectReference Include="..\FileSystem\FileSystem.csproj" />
   </ItemGroup>
 
 </Project>

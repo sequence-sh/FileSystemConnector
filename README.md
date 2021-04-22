@@ -1,4 +1,4 @@
-# EDR Connector
+# EDR FileSystem Connector
 
 [Reductech EDR](https://gitlab.com/reductech/edr) is a collection of
 libraries that automates cross-application e-discovery and forensic workflows.
@@ -19,7 +19,7 @@ To check if a file exists and print the result:
 - Print (CheckFileExists 'c:\path\to\file.txt')
 ```
 
-### [Try Connector](https://gitlab.com/reductech/edr/edr/-/releases)
+### [Try FileSystem Connector](https://gitlab.com/reductech/edr/edr/-/releases)
 
 Using [EDR](https://gitlab.com/reductech/edr/edr),
 the command line tool for running Sequences.
@@ -38,7 +38,7 @@ and a command-line application for running Sequences, called
 
 # Releases
 
-Can be downloaded from the [Releases page](https://gitlab.com/reductech/templates/edr-connector/-/releases).
+Can be downloaded from the [Releases page](https://gitlab.com/reductech/edr/connectors/filesystem/-/releases).
 
 # NuGet Packages
 
