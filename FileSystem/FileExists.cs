@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.IO.Abstractions;
 using System.Threading;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
@@ -36,8 +38,21 @@ public class FileExists : CompoundStep<bool>
         if (pathResult.IsFailure)
             return pathResult.ConvertFailure<bool>();
 
-        var r = stateMonad.ExternalContext.FileSystemHelper.File.Exists(pathResult.Value);
-        return r;
+        var fileSystemResult =
+            stateMonad.ExternalContext.TryGetContext<IFileSystem>(ConnectorInjection.FileSystemKey);
+
+        if (fileSystemResult.IsFailure)
+            return fileSystemResult.MapError(x => x.WithLocation(this)).ConvertFailure<bool>();
+
+        try
+        {
+            var r = fileSystemResult.Value.File.Exists(pathResult.Value);
+            return r;
+        }
+        catch (Exception e)
+        {
+            return new SingleError(new ErrorLocation(this), e, ErrorCode.ExternalProcessError);
+        }
     }
 
     /// <inheritdoc />

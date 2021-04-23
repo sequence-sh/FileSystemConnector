@@ -1,10 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.IO;
+using System.IO.Abstractions;
 using System.Threading;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using Reductech.EDR.Core;
 using Reductech.EDR.Core.Attributes;
-using Reductech.EDR.Core.ExternalProcesses;
 using Reductech.EDR.Core.Internal;
 using Reductech.EDR.Core.Internal.Errors;
 using Reductech.EDR.Core.Util;
@@ -41,8 +43,15 @@ public sealed class FileWrite : CompoundStep<Unit>
 
         var stream = stringStreamResult.Value.GetStream().stream;
 
-        var r = await stateMonad.ExternalContext.FileSystemHelper
-            .WriteFileAsync(
+        var fileSystemResult =
+            stateMonad.ExternalContext.TryGetContext<IFileSystem>(ConnectorInjection.FileSystemKey);
+
+        if (fileSystemResult.IsFailure)
+            return fileSystemResult.MapError(x => x.WithLocation(this))
+                .ConvertFailure<Unit>();
+
+        var r = await WriteFileAsync(
+                fileSystemResult.Value,
                 path.Value,
                 stream,
                 compressResult.Value,
@@ -50,9 +59,50 @@ public sealed class FileWrite : CompoundStep<Unit>
             )
             .MapError(x => x.WithLocation(this));
 
-        stream.Dispose();
+        await stream.DisposeAsync();
 
         return r;
+    }
+
+    private static async Task<Result<Unit, IErrorBuilder>> WriteFileAsync(
+        IFileSystem fileSystem,
+        string path,
+        Stream stream,
+        bool compress,
+        CancellationToken cancellationToken)
+    {
+        Maybe<IErrorBuilder> error;
+
+        try
+        {
+            var writeStream = fileSystem.File.Create(path);
+
+            if (compress)
+            {
+                writeStream =
+                    new System.IO.Compression.GZipStream(
+                        writeStream,
+                        System.IO.Compression.CompressionMode.Compress
+                    );
+            }
+
+            await stream.CopyToAsync(writeStream, cancellationToken);
+            writeStream.Close();
+            error = Maybe<IErrorBuilder>.None;
+        }
+        #pragma warning disable CA1031 // Do not catch general exception types
+        catch (Exception e)
+        {
+            error = Maybe<IErrorBuilder>.From(
+                ErrorCode.ExternalProcessError.ToErrorBuilder(e.Message)
+            );
+        }
+        #pragma warning restore CA1031 // Do not catch general exception types
+
+        if (error.HasValue)
+            return Result.Failure<Unit, IErrorBuilder>(error.Value);
+
+        return Unit.Default;
     }
 
     /// <summary>

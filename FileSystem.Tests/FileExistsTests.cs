@@ -14,17 +14,17 @@ public partial class FileExistsTests : StepTestBase<FileExists, bool>
         {
             yield return new StepCase(
                     "File exists",
-                    new FileExists { Path = Constant("My Path") },
+                    new FileExists { Path = Constant("MyFile.txt") },
                     true
-                )
-                .WithFileAction(x => x.Setup(a => a.Exists("My Path")).Returns(true));
+                ).WithFileSystem(initialFiles: new[] { ("MyFile.txt", "abc") })
+                .WithExpectedFileSystem(expectedFinalFiles: new[] { ("C:\\MyFile.txt", "abc") });
 
             yield return new StepCase(
                     "File does not exist",
-                    new FileExists { Path = Constant("My Path") },
+                    new FileExists { Path = Constant("MyFile.txt") },
                     false
-                )
-                .WithFileAction(x => x.Setup(a => a.Exists("My Path")).Returns(false));
+                ).WithFileSystem()
+                .WithExpectedFileSystem();
         }
     }
 }

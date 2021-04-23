@@ -22,38 +22,39 @@ public partial class PathCombineTests : StepTestBase<PathCombine, StringStream>
             var expected = Path.Combine(currentDirectory, "Hello", "World");
 
             yield return new StepCase(
-                "Non Relative",
-                new PathCombine
-                {
-                    Paths = new ArrayNew<StringStream>
+                    "Non Relative",
+                    new PathCombine
                     {
-                        Elements = new List<IStep<StringStream>>()
+                        Paths = new ArrayNew<StringStream>
                         {
-                            Constant(currentDirectory),
-                            Constant("Hello"),
-                            Constant("World")
+                            Elements = new List<IStep<StringStream>>()
+                            {
+                                Constant(currentDirectory),
+                                Constant("Hello"),
+                                Constant("World")
+                            }
                         }
-                    }
-                },
-                expected
-            );
+                    },
+                    expected
+                ).WithFileSystem()
+                .WithExpectedFileSystem();
 
             yield return new StepCase(
-                "Relative",
-                new PathCombine
-                {
-                    Paths = new ArrayNew<StringStream>
+                    "Relative",
+                    new PathCombine
                     {
-                        Elements = new List<IStep<StringStream>>()
+                        Paths = new ArrayNew<StringStream>
                         {
-                            Constant("Hello"), Constant("World")
+                            Elements = new List<IStep<StringStream>>()
+                            {
+                                Constant("Hello"), Constant("World")
+                            }
                         }
-                    }
-                },
-                expected
-            ).WithDirectoryAction(
-                x => x.Setup(d => d.GetCurrentDirectory()).Returns(currentDirectory)
-            );
+                    },
+                    expected
+                )
+                .WithFileSystem(currentDirectory: currentDirectory)
+                .WithExpectedFileSystem();
         }
     }
 }

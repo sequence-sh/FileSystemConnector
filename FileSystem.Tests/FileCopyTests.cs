@@ -22,7 +22,13 @@ public partial class FileCopyTests : StepTestBase<FileCopy, Unit>
                     },
                     Unit.Default
                 )
-                .WithFileAction(x => x.Setup(f => f.Copy("MySource", "MyDestination", true)));
+                .WithFileSystem(initialFiles: new[] { ("MySource", "abc") })
+                .WithExpectedFileSystem(
+                    expectedFinalFiles: new[]
+                    {
+                        ("C:\\MySource", "abc"), ("C:\\MyDestination", "abc")
+                    }
+                );
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.IO.Abstractions;
 using System.Threading;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
@@ -38,11 +40,24 @@ public class FileCopy : CompoundStep<Unit>
         if (overwrite.IsFailure)
             return overwrite.ConvertFailure<Unit>();
 
-        stateMonad.ExternalContext.FileSystemHelper.File.Copy(
-            source.Value,
-            destination.Value,
-            overwrite.Value
-        );
+        var fileSystemResult =
+            stateMonad.ExternalContext.TryGetContext<IFileSystem>(ConnectorInjection.FileSystemKey);
+
+        if (fileSystemResult.IsFailure)
+            return fileSystemResult.MapError(x => x.WithLocation(this)).ConvertFailure<Unit>();
+
+        try
+        {
+            fileSystemResult.Value.File.Copy(
+                source.Value,
+                destination.Value,
+                overwrite.Value
+            );
+        }
+        catch (Exception e)
+        {
+            return new SingleError(new ErrorLocation(this), e, ErrorCode.ExternalProcessError);
+        }
 
         return Unit.Default;
     }

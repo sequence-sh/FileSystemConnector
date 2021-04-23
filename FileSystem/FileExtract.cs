@@ -1,10 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using Reductech.EDR.Core;
 using Reductech.EDR.Core.Attributes;
-using Reductech.EDR.Core.ExternalProcesses;
 using Reductech.EDR.Core.Internal;
 using Reductech.EDR.Core.Internal.Errors;
 using Reductech.EDR.Core.Util;
@@ -40,14 +40,28 @@ public class FileExtract : CompoundStep<Unit>
         if (overwriteResult.IsFailure)
             return overwriteResult.ConvertFailure<Unit>();
 
-        var result =
-            stateMonad.ExternalContext.FileSystemHelper.ExtractToDirectory(
+        var compressionResult =
+            stateMonad.ExternalContext.TryGetContext<ICompression>(
+                ConnectorInjection.CompressionKey
+            );
+
+        if (compressionResult.IsFailure)
+            return compressionResult.MapError(x => x.WithLocation(this)).ConvertFailure<Unit>();
+
+        try
+        {
+            compressionResult.Value.ExtractToDirectory(
                 archivePathResult.Value,
                 destinationResult.Value,
                 overwriteResult.Value
             );
+        }
+        catch (Exception e)
+        {
+            return new SingleError(new ErrorLocation(this), e, ErrorCode.ExternalProcessError);
+        }
 
-        return result.MapError(x => x.WithLocation(this));
+        return Unit.Default;
     }
 
     /// <summary>

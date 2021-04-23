@@ -15,14 +15,14 @@ public partial class DeleteItemTests : StepTestBase<DeleteItem, Unit>
     {
         get
         {
+            //Note log messages are ignored as they are debug messages
             yield return new StepCase(
                         "Delete Directory",
                         new DeleteItem { Path = Constant("My Path") },
                         Unit.Default
                         //, "Directory 'My Path' Deleted."
-                    )
-                    .WithDirectoryAction(x => x.Setup(a => a.Exists("My Path")).Returns(true))
-                    .WithDirectoryAction(x => x.Setup(a => a.Delete("My Path", true)))
+                    ).WithFileSystem(initialDirectories: new List<string> { "My Path" })
+                    .WithExpectedFileSystem()
                 ;
 
             yield return new StepCase(
@@ -30,18 +30,16 @@ public partial class DeleteItemTests : StepTestBase<DeleteItem, Unit>
                     new DeleteItem { Path = Constant("My Path") },
                     Unit.Default
                     // , "File 'My Path' Deleted."
-                )
-                .WithDirectoryAction(x => x.Setup(a => a.Exists("My Path")).Returns(false))
-                .WithFileAction(x => x.Setup(a => a.Exists("My Path")).Returns(true))
-                .WithFileAction(x => x.Setup(a => a.Delete("My Path")));
+                ).WithFileSystem(new[] { ("My Path", "abcd") })
+                .WithExpectedFileSystem();
 
             yield return new StepCase(
                     "Item does not exist",
                     new DeleteItem { Path = Constant("My Path") },
                     Unit.Default
                     //, "Item 'My Path' did not exist."
-                ).WithDirectoryAction(x => x.Setup(a => a.Exists("My Path")).Returns(false))
-                .WithFileAction(x => x.Setup(a => a.Exists("My Path")).Returns(false));
+                ).WithFileSystem()
+                .WithExpectedFileSystem();
         }
     }
 
@@ -51,17 +49,23 @@ public partial class DeleteItemTests : StepTestBase<DeleteItem, Unit>
         get
         {
             yield return new ErrorCase(
-                    "Could not delete file",
-                    new DeleteItem { Path = Constant("My Path") },
-                    new ErrorBuilder(
-                        ErrorCode.ExternalProcessError,
-                        "Exception of type 'System.Exception' was thrown."
+                        "Could not delete file",
+                        new DeleteItem { Path = Constant("My Path") },
+                        new ErrorBuilder(
+                            new Exception("Ultimate Test Exception"),
+                            ErrorCode.ExternalProcessError
+                        )
                     )
-                )
-                .WithDirectoryAction(x => x.Setup(a => a.Exists("My Path")).Returns(true))
-                .WithDirectoryAction(
-                    x => x.Setup(a => a.Delete("My Path", true)).Throws<Exception>()
-                );
+                    .WithFileSystemMock(
+                        x =>
+                        {
+                            x.Setup(fs => fs.Directory.Exists("My Path")).Returns(true);
+
+                            x.Setup(fs => fs.Directory.Delete("My Path", true))
+                                .Throws(new Exception("Ultimate Test Exception"));
+                        }
+                    )
+                ;
         }
     }
 }

@@ -13,14 +13,15 @@ public partial class DirectoryMoveTests : StepTestBase<DirectoryMove, Unit>
         get
         {
             yield return new StepCase(
-                "Move Directory",
-                new DirectoryMove()
-                {
-                    SourceDirectory      = StaticHelpers.Constant("MySource"),
-                    DestinationDirectory = StaticHelpers.Constant("MyDestination")
-                },
-                Unit.Default
-            ).WithDirectoryAction(x => x.Setup(f => f.Move("MySource", "MyDestination")));
+                    "Move Directory",
+                    new DirectoryMove
+                    {
+                        SourceDirectory      = StaticHelpers.Constant("MySource"),
+                        DestinationDirectory = StaticHelpers.Constant("MyDestination")
+                    },
+                    Unit.Default
+                ).WithFileSystem(initialDirectories: new[] { "MySource" })
+                .WithExpectedFileSystem(expectedFinalDirectories: new[] { "MyDestination" });
         }
     }
 }

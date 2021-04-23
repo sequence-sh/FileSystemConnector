@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.IO.Abstractions;
 using System.Threading;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using Reductech.EDR.Core;
 using Reductech.EDR.Core.Attributes;
-using Reductech.EDR.Core.ExternalProcesses;
 using Reductech.EDR.Core.Internal;
 using Reductech.EDR.Core.Internal.Errors;
 using Reductech.EDR.Core.Internal.Logging;
@@ -31,25 +32,38 @@ public class DeleteItem : CompoundStep<Unit>
 
         var path = await pathResult.Value.GetStringAsync();
 
-        Result<Unit, IErrorBuilder> result;
+        var fileSystemResult =
+            stateMonad.ExternalContext.TryGetContext<IFileSystem>(ConnectorInjection.FileSystemKey);
 
-        if (stateMonad.ExternalContext.FileSystemHelper.Directory.Exists(path))
-        {
-            result = stateMonad.ExternalContext.FileSystemHelper.DeleteDirectory(path, true);
-            LogSituation.DirectoryDeleted.Log(stateMonad, this, path);
-        }
-        else if (stateMonad.ExternalContext.FileSystemHelper.File.Exists(path))
-        {
-            result = stateMonad.ExternalContext.FileSystemHelper.DeleteFile(path);
-            LogSituation.FileDeleted.Log(stateMonad, this, path);
-        }
-        else
-        {
-            result = Unit.Default;
-            LogSituation.ItemToDeleteDidNotExist.Log(stateMonad, this, path);
-        }
+        if (fileSystemResult.IsFailure)
+            return fileSystemResult.MapError(x => x.WithLocation(this)).ConvertFailure<Unit>();
 
-        return result.MapError(x => x.WithLocation(this));
+        try
+        {
+            if (fileSystemResult.IsFailure)
+                return fileSystemResult.MapError(x => x.WithLocation(this)).ConvertFailure<Unit>();
+
+            if (fileSystemResult.Value.Directory.Exists(path))
+            {
+                fileSystemResult.Value.Directory.Delete(path, true);
+                LogSituation.DirectoryDeleted.Log(stateMonad, this, path);
+            }
+            else if (fileSystemResult.Value.File.Exists(path))
+            {
+                fileSystemResult.Value.File.Delete(path);
+                LogSituation.FileDeleted.Log(stateMonad, this, path);
+            }
+            else
+            {
+                LogSituation.ItemToDeleteDidNotExist.Log(stateMonad, this, path);
+            }
+
+            return Unit.Default;
+        }
+        catch (Exception e)
+        {
+            return new SingleError(new ErrorLocation(this), e, ErrorCode.ExternalProcessError);
+        }
     }
 
     /// <summary>

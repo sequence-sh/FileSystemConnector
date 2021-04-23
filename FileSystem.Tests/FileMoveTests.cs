@@ -14,14 +14,17 @@ public partial class FileMoveTests : StepTestBase<FileMove, Unit>
         get
         {
             yield return new StepCase(
-                "Move File",
-                new FileMove()
-                {
-                    SourceFile      = Constant("MySource"),
-                    DestinationFile = Constant("MyDestination")
-                },
-                Unit.Default
-            ).WithFileAction(x => x.Setup(f => f.Move("MySource", "MyDestination")));
+                    "Move File",
+                    new FileMove()
+                    {
+                        SourceFile      = Constant("MySourceFile.txt"),
+                        DestinationFile = Constant("MyDestinationFile.txt")
+                    },
+                    Unit.Default
+                ).WithFileSystem(initialFiles: new[] { ("MySourceFile.txt", "abc") })
+                .WithExpectedFileSystem(
+                    expectedFinalFiles: new[] { ("C:\\MyDestinationFile.txt", "abc") }
+                );
         }
     }
 }

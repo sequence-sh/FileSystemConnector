@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.IO;
+using System.IO.Abstractions;
 using System.Threading;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using Reductech.EDR.Core;
 using Reductech.EDR.Core.Attributes;
-using Reductech.EDR.Core.ExternalProcesses;
 using Reductech.EDR.Core.Internal;
 using Reductech.EDR.Core.Internal.Errors;
 using Reductech.EDR.Core.Util;
@@ -45,13 +45,19 @@ public class DirectoryCopy : CompoundStep<Unit>
         if (copySubDirectories.IsFailure)
             return copySubDirectories.ConvertFailure<Unit>();
 
+        var fileSystemResult =
+            stateMonad.ExternalContext.TryGetContext<IFileSystem>(ConnectorInjection.FileSystemKey);
+
+        if (fileSystemResult.IsFailure)
+            return fileSystemResult.MapError(x => x.WithLocation(this)).ConvertFailure<Unit>();
+
         var copyResult =
             DoCopy(
                 source.Value,
                 destination.Value,
                 copySubDirectories.Value,
                 overwrite.Value,
-                stateMonad.ExternalContext.FileSystemHelper
+                fileSystemResult.Value
             );
 
         if (copyResult.IsFailure)

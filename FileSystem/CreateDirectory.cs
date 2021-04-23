@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.IO.Abstractions;
 using System.Threading;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using Reductech.EDR.Core;
 using Reductech.EDR.Core.Attributes;
-using Reductech.EDR.Core.ExternalProcesses;
 using Reductech.EDR.Core.Internal;
 using Reductech.EDR.Core.Internal.Errors;
 using Reductech.EDR.Core.Util;
@@ -31,10 +32,22 @@ public class CreateDirectory : CompoundStep<Unit>
 
         var pathString = await pathResult.Value.GetStringAsync();
 
-        var r = stateMonad.ExternalContext.FileSystemHelper.CreateDirectory(pathString)
-            .MapError(x => x.WithLocation(this));
+        var fileSystemResult =
+            stateMonad.ExternalContext.TryGetContext<IFileSystem>(ConnectorInjection.FileSystemKey);
 
-        return r;
+        if (fileSystemResult.IsFailure)
+            return fileSystemResult.MapError(x => x.WithLocation(this)).ConvertFailure<Unit>();
+
+        try
+        {
+            fileSystemResult.Value.Directory.CreateDirectory(pathString);
+        }
+        catch (Exception e)
+        {
+            return new SingleError(new ErrorLocation(this), e, ErrorCode.ExternalProcessError);
+        }
+
+        return Unit.Default;
     }
 
     /// <summary>

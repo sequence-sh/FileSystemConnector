@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.IO.Abstractions;
 using System.Threading;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
@@ -36,8 +38,21 @@ public class DirectoryExists : CompoundStep<bool>
 
         var pathString = await pathResult.Value.GetStringAsync();
 
-        var r = stateMonad.ExternalContext.FileSystemHelper.Directory.Exists(pathString);
-        return r;
+        var fileSystemResult =
+            stateMonad.ExternalContext.TryGetContext<IFileSystem>(ConnectorInjection.FileSystemKey);
+
+        if (fileSystemResult.IsFailure)
+            return fileSystemResult.MapError(x => x.WithLocation(this)).ConvertFailure<bool>();
+
+        try
+        {
+            var r = fileSystemResult.Value.Directory.Exists(pathString);
+            return r;
+        }
+        catch (Exception e)
+        {
+            return new SingleError(new ErrorLocation(this), e, ErrorCode.ExternalProcessError);
+        }
     }
 
     /// <inheritdoc />

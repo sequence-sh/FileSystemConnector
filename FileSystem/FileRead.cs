@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.IO.Abstractions;
 using System.Threading;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using Reductech.EDR.Core;
 using Reductech.EDR.Core.Attributes;
 using Reductech.EDR.Core.Enums;
-using Reductech.EDR.Core.ExternalProcesses;
 using Reductech.EDR.Core.Internal;
 using Reductech.EDR.Core.Internal.Errors;
 
@@ -39,12 +40,33 @@ public sealed class FileRead : CompoundStep<StringStream>
         if (decompress.IsFailure)
             return decompress.ConvertFailure<StringStream>();
 
-        var result = stateMonad.ExternalContext.FileSystemHelper
-            .ReadFile(path.Value, decompress.Value)
-            .MapError(x => x.WithLocation(this))
-            .Map(x => new StringStream(x, encoding.Value)); //TODO fix
+        var fileSystemResult =
+            stateMonad.ExternalContext.TryGetContext<IFileSystem>(ConnectorInjection.FileSystemKey);
 
-        return result;
+        if (fileSystemResult.IsFailure)
+            return fileSystemResult.MapError(x => x.WithLocation(this))
+                .ConvertFailure<StringStream>();
+
+        try
+        {
+            var fs = fileSystemResult.Value.File.OpenRead(path.Value);
+
+            if (decompress.Value)
+            {
+                fs = new System.IO.Compression.GZipStream(
+                    fs,
+                    System.IO.Compression.CompressionMode.Decompress
+                );
+            }
+
+            var stringStream = new StringStream(fs, encoding.Value);
+
+            return stringStream;
+        }
+        catch (Exception e)
+        {
+            return new SingleError(new ErrorLocation(this), e, ErrorCode.ExternalProcessError);
+        }
     }
 
     /// <summary>

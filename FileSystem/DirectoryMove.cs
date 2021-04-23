@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.IO.Abstractions;
 using System.Threading;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
@@ -33,7 +35,20 @@ public class DirectoryMove : CompoundStep<Unit>
         if (destination.IsFailure)
             return destination.ConvertFailure<Unit>();
 
-        stateMonad.ExternalContext.FileSystemHelper.Directory.Move(source.Value, destination.Value);
+        var fileSystemResult =
+            stateMonad.ExternalContext.TryGetContext<IFileSystem>(ConnectorInjection.FileSystemKey);
+
+        if (fileSystemResult.IsFailure)
+            return fileSystemResult.MapError(x => x.WithLocation(this)).ConvertFailure<Unit>();
+
+        try
+        {
+            fileSystemResult.Value.Directory.Move(source.Value, destination.Value);
+        }
+        catch (Exception e)
+        {
+            return new SingleError(new ErrorLocation(this), e, ErrorCode.ExternalProcessError);
+        }
 
         return Unit.Default;
     }

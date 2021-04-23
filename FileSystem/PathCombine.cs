@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -38,27 +38,33 @@ public sealed class PathCombine : CompoundStep<StringStream>
         foreach (var stringStream in pathsResult.Value)
             paths.Add(await stringStream.GetStringAsync());
 
+        var fileSystemResult =
+            stateMonad.ExternalContext.TryGetContext<IFileSystem>(ConnectorInjection.FileSystemKey);
+
+        if (fileSystemResult.IsFailure)
+            return fileSystemResult.MapError(x => x.WithLocation(this))
+                .ConvertFailure<StringStream>();
+
         if (!paths.Any())
         {
-            var currentDirectory =
-                stateMonad.ExternalContext.FileSystemHelper.Directory.GetCurrentDirectory();
+            var currentDirectory = fileSystemResult.Value.Directory.GetCurrentDirectory();
 
             LogSituation.NoPathProvided.Log(stateMonad, this, currentDirectory);
 
             return new StringStream(currentDirectory);
         }
 
-        if (!Path.IsPathFullyQualified(paths[0]))
+        if (!fileSystemResult.Value.Path.IsPathFullyQualified(paths[0]))
         {
             var currentDirectory =
-                stateMonad.ExternalContext.FileSystemHelper.Directory.GetCurrentDirectory();
+                fileSystemResult.Value.Directory.GetCurrentDirectory();
 
             paths = paths.Prepend(currentDirectory).ToList();
 
             LogSituation.QualifyingPath.Log(stateMonad, this, paths[0], currentDirectory);
         }
 
-        StringStream result = Path.Combine(paths.ToArray());
+        StringStream result = fileSystemResult.Value.Path.Combine(paths.ToArray());
 
         return result;
     }

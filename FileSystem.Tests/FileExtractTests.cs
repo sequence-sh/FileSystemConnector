@@ -14,15 +14,18 @@ public partial class FileExtractTests : StepTestBase<FileExtract, Unit>
         get
         {
             yield return new StepCase(
-                    "FileExtract",
-                    new FileExtract
-                    {
-                        ArchiveFilePath = Constant("Foo"),
-                        Destination     = Constant("Bar"),
-                        Overwrite       = Constant(true)
-                    },
-                    Unit.Default
-                ).WithCompressionAction(x => x.Setup(c => c.ExtractToDirectory("Foo", "Bar", true)))
+                        "FileExtract",
+                        new FileExtract
+                        {
+                            ArchiveFilePath = Constant("Foo"),
+                            Destination     = Constant("Bar"),
+                            Overwrite       = Constant(true)
+                        },
+                        Unit.Default
+                    )
+                    .WithCompressionMock(
+                        x => x.Setup(c => c.ExtractToDirectory("Foo", "Bar", true))
+                    )
                 ;
         }
     }
