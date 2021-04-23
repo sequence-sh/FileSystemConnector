@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <RootNamespace>Reductech.EDR.Connectors.FileSystem</RootNamespace>
+    <AssemblyName>Reductech.EDR.Connectors.FileSystem</AssemblyName>
+    <Nullable>enable</Nullable>
+    <Version>0.9.0$(VersionSuffix)</Version>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>Reductech.EDR.Connectors.FileSystem</PackageId>
+    <Title>EDR FileSystem Connector</Title>
+    <Description>A class library for using FileSystem in EDR Sequences</Description>
+    <Product>EDR</Product>
+    <PackageTags>ediscovery;forensics;edrm;automation;orchestration</PackageTags>
+
+    <PackageProjectUrl>https://gitlab.com/reductech/edr/connectors/filesystem</PackageProjectUrl>
+    <RepositoryUrl>https://gitlab.com/reductech/edr/connectors/filesystem</RepositoryUrl>
+    <PackageReleaseNotes>Please see https://gitlab.com/reductech/edr/connectors/filesystem/-/releases</PackageReleaseNotes>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+
+    <Authors>Reductech</Authors>
+    <Company>Reductech</Company>
+    <Copyright>Copyright (c) 2021 Reductech Ltd</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Reductech.EDR.Core" Version="0.9.0-a.master.2104231243">
+      <ExcludeAssets>runtime</ExcludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>

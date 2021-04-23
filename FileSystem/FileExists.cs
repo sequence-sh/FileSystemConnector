@@ -1,4 +1,6 @@
+﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.IO.Abstractions;
 using System.Threading;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
@@ -7,13 +9,14 @@ using Reductech.EDR.Core.Attributes;
 using Reductech.EDR.Core.Internal;
 using Reductech.EDR.Core.Internal.Errors;
 
-namespace Reductech.Templates.EDRConnector
+namespace Reductech.EDR.Connectors.FileSystem
 {
 
 /// <summary>
-/// Returns true if the file in the specified path exists, false otherwise
+/// Returns whether a file on the file system exists.
 /// </summary>
-public class CheckFileExists : CompoundStep<bool>
+[Alias("DoesFileExist")]
+public class FileExists : CompoundStep<bool>
 {
     /// <summary>
     /// The path to the file to check.
@@ -35,26 +38,25 @@ public class CheckFileExists : CompoundStep<bool>
         if (pathResult.IsFailure)
             return pathResult.ConvertFailure<bool>();
 
-        var r = stateMonad.FileSystemHelper.DoesFileExist(pathResult.Value);
-        return r;
+        var fileSystemResult =
+            stateMonad.ExternalContext.TryGetContext<IFileSystem>(ConnectorInjection.FileSystemKey);
+
+        if (fileSystemResult.IsFailure)
+            return fileSystemResult.MapError(x => x.WithLocation(this)).ConvertFailure<bool>();
+
+        try
+        {
+            var r = fileSystemResult.Value.File.Exists(pathResult.Value);
+            return r;
+        }
+        catch (Exception e)
+        {
+            return new SingleError(new ErrorLocation(this), e, ErrorCode.ExternalProcessError);
+        }
     }
 
     /// <inheritdoc />
-    public override IStepFactory StepFactory => CheckFileExistsStepFactory.Instance;
-}
-
-/// <summary>
-/// Returns true if the file in the specified path exists, false otherwise
-/// </summary>
-public class CheckFileExistsStepFactory : SimpleStepFactory<CheckFileExists, bool>
-{
-    private CheckFileExistsStepFactory() { }
-
-    /// <summary>
-    /// An instance of DoesFileExistStepFactory
-    /// </summary>
-    public static SimpleStepFactory<CheckFileExists, bool> Instance { get; } =
-        new CheckFileExistsStepFactory();
+    public override IStepFactory StepFactory { get; } = new SimpleStepFactory<FileExists, bool>();
 }
 
 }
