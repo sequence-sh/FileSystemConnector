@@ -8,7 +8,7 @@ using static Reductech.EDR.Core.TestHarness.StaticHelpers;
 namespace Reductech.EDR.Connectors.FileSystem.Tests
 {
 
-public partial class CreateDirectoryTests : StepTestBase<CreateDirectory, Unit>
+public partial class DirectoryCreateTests : StepTestBase<DirectoryCreate, Unit>
 {
     /// <inheritdoc />
     protected override IEnumerable<StepCase> StepCases
@@ -17,7 +17,7 @@ public partial class CreateDirectoryTests : StepTestBase<CreateDirectory, Unit>
         {
             yield return new StepCase(
                     "Create Directory",
-                    new CreateDirectory { Path = Constant("MyPath") },
+                    new DirectoryCreate { Path = Constant("MyPath") },
                     Unit.Default
                 ).WithFileSystem()
                 .WithExpectedFileSystem(expectedFinalDirectories: new List<string>() { "MyPath" });
@@ -46,7 +46,7 @@ public partial class CreateDirectoryTests : StepTestBase<CreateDirectory, Unit>
         {
             yield return new ErrorCase(
                 "Error returned",
-                new CreateDirectory { Path = Constant("MyPath") },
+                new DirectoryCreate { Path = Constant("MyPath") },
                 new ErrorBuilder(
                     new Exception("Ultimate Test Exception"),
                     ErrorCode.ExternalProcessError

@@ -18,7 +18,8 @@ namespace Reductech.EDR.Connectors.FileSystem
 /// Will create all directories and subdirectories in the specified path unless they already exist.
 /// </summary>
 [Alias("mkdir")]
-public class CreateDirectory : CompoundStep<Unit>
+[Alias("CreateDirectory")]
+public class DirectoryCreate : CompoundStep<Unit>
 {
     /// <inheritdoc />
     protected override async Task<Result<Unit, IError>> Run(
@@ -59,7 +60,7 @@ public class CreateDirectory : CompoundStep<Unit>
 
     /// <inheritdoc />
     public override IStepFactory StepFactory { get; } =
-        new SimpleStepFactory<CreateDirectory, Unit>();
+        new SimpleStepFactory<DirectoryCreate, Unit>();
 }
 
 }
