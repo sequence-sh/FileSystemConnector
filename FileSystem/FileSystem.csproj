@@ -6,7 +6,7 @@
     <RootNamespace>Reductech.EDR.Connectors.FileSystem</RootNamespace>
     <AssemblyName>Reductech.EDR.Connectors.FileSystem</AssemblyName>
     <Nullable>enable</Nullable>
-    <Version>0.1.0$(VersionSuffix)</Version>
+    <Version>0.9.0$(VersionSuffix)</Version>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -27,7 +27,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\core\Core\Core.csproj" />
+    <PackageReference Include="Reductech.EDR.Core" Version="0.9.0-a.master.2104231243">
+      <ExcludeAssets>runtime</ExcludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>
