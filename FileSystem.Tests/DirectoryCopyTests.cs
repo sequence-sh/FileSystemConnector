@@ -16,8 +16,8 @@ public partial class DirectoryCopyTests : StepTestBase<DirectoryCopy, Unit>
                     "Copy Directory",
                     new DirectoryCopy
                     {
-                        SourceDirectory      = StaticHelpers.Constant("C:/MySource"),
-                        DestinationDirectory = StaticHelpers.Constant("C:/MyDestination"),
+                        SourceDirectory      = StaticHelpers.Constant("/MySource"),
+                        DestinationDirectory = StaticHelpers.Constant("/MyDestination"),
                         Overwrite            = StaticHelpers.Constant(true),
                         CopySubDirectories   = StaticHelpers.Constant(true)
                     },
@@ -32,9 +32,9 @@ public partial class DirectoryCopyTests : StepTestBase<DirectoryCopy, Unit>
                 .WithExpectedFileSystem(
                     new[]
                     {
-                        ("C:\\MySource\\f1", "a"), ("C:\\MySource\\f2", "b"),
-                        ("C:\\MySource\\sub\\f3", "c"), ("C:\\MyDestination\\f1", "a"),
-                        ("C:\\MyDestination\\f2", "b"), ("C:\\MyDestination\\sub\\f3", "c")
+                        ("/MySource/f1", "a"), ("/MySource/f2", "b"), ("/MySource/sub/f3", "c"),
+                        ("/MyDestination/f1", "a"), ("/MyDestination/f2", "b"),
+                        ("/MyDestination/sub/f3", "c")
                     },
                     new[] { "MySource", "MyDestination" }
                 );

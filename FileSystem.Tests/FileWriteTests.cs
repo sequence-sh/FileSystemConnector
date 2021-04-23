@@ -25,7 +25,7 @@ public partial class FileWriteTests : StepTestBase<FileWrite, Unit>
                     Unit.Default
                 ).WithFileSystem()
                 .WithExpectedFileSystem(
-                    expectedFinalFiles: new[] { ("C:\\Filename.txt", "Hello World") }
+                    expectedFinalFiles: new[] { ("/Filename.txt", "Hello World") }
                 );
 
             yield return new StepCase(

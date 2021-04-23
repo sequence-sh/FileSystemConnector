@@ -24,10 +24,7 @@ public partial class FileCopyTests : StepTestBase<FileCopy, Unit>
                 )
                 .WithFileSystem(initialFiles: new[] { ("MySource", "abc") })
                 .WithExpectedFileSystem(
-                    expectedFinalFiles: new[]
-                    {
-                        ("C:\\MySource", "abc"), ("C:\\MyDestination", "abc")
-                    }
+                    expectedFinalFiles: new[] { ("/MySource", "abc"), ("/MyDestination", "abc") }
                 );
         }
     }

@@ -23,9 +23,7 @@ public partial class FileReadTests : StepTestBase<FileRead, StringStream>
                     Unit.Default,
                     "Hello World"
                 ).WithFileSystem(initialFiles: new[] { ("File.txt", "Hello World") })
-                .WithExpectedFileSystem(
-                    expectedFinalFiles: new[] { ("C:\\File.txt", "Hello World") }
-                );
+                .WithExpectedFileSystem(expectedFinalFiles: new[] { ("/File.txt", "Hello World") });
 
             //NOTE: Compression is tested in FileWriteTests
         }
@@ -42,9 +40,7 @@ public partial class FileReadTests : StepTestBase<FileRead, StringStream>
                     Unit.Default,
                     "Hello World"
                 ).WithFileSystem(initialFiles: new[] { ("File.txt", "Hello World") })
-                .WithExpectedFileSystem(
-                    expectedFinalFiles: new[] { ("C:\\File.txt", "Hello World") }
-                );
+                .WithExpectedFileSystem(expectedFinalFiles: new[] { ("/File.txt", "Hello World") });
 
             yield return new DeserializeCase(
                     "Ordered Args",
@@ -52,9 +48,7 @@ public partial class FileReadTests : StepTestBase<FileRead, StringStream>
                     Unit.Default,
                     "Hello World"
                 ).WithFileSystem(initialFiles: new[] { ("File.txt", "Hello World") })
-                .WithExpectedFileSystem(
-                    expectedFinalFiles: new[] { ("C:\\File.txt", "Hello World") }
-                );
+                .WithExpectedFileSystem(expectedFinalFiles: new[] { ("/File.txt", "Hello World") });
 
             yield return new DeserializeCase(
                     "Alias",
@@ -62,9 +56,7 @@ public partial class FileReadTests : StepTestBase<FileRead, StringStream>
                     Unit.Default,
                     "Hello World"
                 ).WithFileSystem(initialFiles: new[] { ("File.txt", "Hello World") })
-                .WithExpectedFileSystem(
-                    expectedFinalFiles: new[] { ("C:\\File.txt", "Hello World") }
-                );
+                .WithExpectedFileSystem(expectedFinalFiles: new[] { ("/File.txt", "Hello World") });
         }
     }
 

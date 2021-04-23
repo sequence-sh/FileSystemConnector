@@ -53,17 +53,17 @@ public partial class LoggingTests
                     ),
                     CheckMessageAndScope(
                         LogLevel.Warning,
-                        "No path was provided. Returning the Current Directory: c:\\MyDir",
+                        "No path was provided. Returning the Current Directory: /MyDir",
                         new[] { "Log", "PathCombine" }
                     ),
                     CheckMessageAndScope(
                         LogLevel.Trace,
-                        "PathCombine Completed Successfully with Result: string Length: 8",
+                        "PathCombine Completed Successfully with Result: string Length: 6",
                         new[] { "Log", "PathCombine" }
                     ),
                     CheckMessageAndScope(
                         LogLevel.Information,
-                        "c:\\MyDir",
+                        "/MyDir",
                         new[] { "Log" }
                     ),
                     CheckMessageAndScope(
@@ -72,7 +72,7 @@ public partial class LoggingTests
                         new[] { "Log" }
                     ),
                     CheckMessageAndScope(LogLevel.Debug, "EDR Sequence Completed", null)
-                ).WithFileSystem(currentDirectory: "c:\\MyDir");
+                ).WithFileSystem(currentDirectory: "/MyDir");
 
             yield return new LoggingTestCase(
                 "Unqualified Path to combine",
@@ -100,18 +100,18 @@ public partial class LoggingTests
                 ),
                 CheckMessageAndScope(
                     LogLevel.Debug,
-                    "Path c:\\MyDir was not fully qualified. Prepending the Current Directory: c:\\MyDir",
+                    "Path /MyDir was not fully qualified. Prepending the Current Directory: /MyDir",
                     new[] { "Log", "PathCombine" }
                 ),
                 CheckMessageAndScope(
                     LogLevel.Trace,
-                    "PathCombine Completed Successfully with Result: string Length: 13",
+                    "PathCombine Completed Successfully with Result: string Length: 11",
                     new[] { "Log", "PathCombine", }
                 ),
                 x =>
                 {
                     x.LogLevel.Should().Be(LogLevel.Information);
-                    x.Message.Should().Be("c:\\MyDir\\File");
+                    x.Message.Should().BeOneOf("/MyDir/File", "/MyDir\\File");
                 },
                 CheckMessageAndScope(
                     LogLevel.Trace,
@@ -119,7 +119,7 @@ public partial class LoggingTests
                     new[] { "Log" }
                 ),
                 CheckMessageAndScope(LogLevel.Debug, "EDR Sequence Completed", null)
-            ).WithFileSystem(currentDirectory: "c:\\MyDir");
+            ).WithFileSystem(currentDirectory: "/MyDir");
 
             yield return new LoggingTestCase(
                 "File Read",
