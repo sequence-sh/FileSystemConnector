@@ -23,7 +23,7 @@ public partial class FileMoveTests : StepTestBase<FileMove, Unit>
                     Unit.Default
                 ).WithFileSystem(initialFiles: new[] { ("MySourceFile.txt", "abc") })
                 .WithExpectedFileSystem(
-                    expectedFinalFiles: new[] { ("C:\\MyDestinationFile.txt", "abc") }
+                    expectedFinalFiles: new[] { ("/MyDestinationFile.txt", "abc") }
                 );
         }
     }
