@@ -102,9 +102,11 @@ public static class Extensions
                     "*",
                     SearchOption.AllDirectories
                 )
+                .Select(NormalizePath)
                 .ToList();
 
-            allActualFiles.Should().BeEquivalentTo(expectedFinalFiles.Select(x => x.filename));
+            allActualFiles.Should()
+                .BeEquivalentTo(expectedFinalFiles.Select(x => x.filename).Select(NormalizePath));
 
             foreach (var (expectedFilename, expectedFileText) in expectedFinalFiles)
             {
@@ -123,10 +125,22 @@ public static class Extensions
                         .Select(
                             x => Path.GetRelativePath(fs.Value.Directory.GetCurrentDirectory(), x)
                         )
+                        .Select(NormalizePath)
                         .Except(new[] { "temp" }) //ignore the temp directory
                 ;
 
-            actualDirectories.Should().BeEquivalentTo(expectedFinalDirectories);
+            actualDirectories.Should()
+                .BeEquivalentTo(expectedFinalDirectories.Select(NormalizePath));
+        }
+
+        static string NormalizePath(string s)
+        {
+            if (s.StartsWith("C:", StringComparison.OrdinalIgnoreCase))
+                s = s[2..];
+
+            s = s.Replace('/', '\\');
+
+            return s;
         }
     }
 }
