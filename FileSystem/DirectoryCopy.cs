@@ -118,7 +118,10 @@ public class DirectoryCopy : CompoundStep<Unit>
 
         foreach (var file in files)
         {
-            string newPath = Path.Combine(destDirName, Path.GetFileName(file));
+            string newPath = fileSystem.Path.Combine(
+                destDirName,
+                fileSystem.Path.GetFileName(file)
+            );
 
             fileSystem.File.Copy(file, newPath, overwrite);
         }
@@ -128,9 +131,11 @@ public class DirectoryCopy : CompoundStep<Unit>
         {
             foreach (var subDirectory in dirs)
             {
-                string newPath = Path.Combine(
+                var subDirectoryName = fileSystem.Path.GetFileName(subDirectory);
+
+                string newPath = fileSystem.Path.Combine(
                     destDirName,
-                    Path.GetRelativePath(sourceDirName, subDirectory)
+                    subDirectoryName
                 );
 
                 var r = DoCopy(

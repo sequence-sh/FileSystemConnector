@@ -1,3 +1,6 @@
 include:
   - project: reductech/templates/cicd/dotnet
     file: .gitlab-ci.linux.yml
+
+variables:
+  PUBLISH_CONNECTOR: 1
