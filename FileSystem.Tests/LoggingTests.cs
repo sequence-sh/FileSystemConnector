@@ -189,7 +189,11 @@ public partial class LoggingTests
         /// <inheritdoc />
         public async Task RunAsync(ITestOutputHelper testOutputHelper)
         {
-            var spf = StepFactoryStore.CreateFromAssemblies(typeof(PathCombine).Assembly);
+            var assembly = typeof(PathCombine).Assembly!;
+
+            var spf = StepFactoryStore.Create(
+                new ConnectorData(ConnectorSettings.DefaultForAssembly(assembly), assembly)
+            );
 
             var loggerFactory = TestLoggerFactory.Create();
             loggerFactory.AddXunit(testOutputHelper);
