@@ -11,6 +11,8 @@ You can:
     - Create, move, copy, and delete files
     - Combine paths
     - Extract compressed files
+
+
 ## Examples
 
 Read the contents of a file
