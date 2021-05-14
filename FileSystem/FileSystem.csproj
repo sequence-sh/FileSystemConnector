@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <RootNamespace>Reductech.EDR.Connectors.FileSystem</RootNamespace>
     <AssemblyName>Reductech.EDR.Connectors.FileSystem</AssemblyName>
     <Nullable>enable</Nullable>
