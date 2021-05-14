@@ -3,20 +3,28 @@
 [Reductech EDR](https://gitlab.com/reductech/edr) is a collection of
 libraries that automates cross-application e-discovery and forensic workflows.
 
-This connector contains Steps to interact with...
+This connector contains Steps to interact with the file system of the host computer.
 
-## Steps
+You can:
 
-|       Step        | Description                                           | Result Type |
-| :---------------: | :---------------------------------------------------- | :---------: |
-| `CheckFileExists` | Checks if a given path exists and returns true/false. |   `bool`    |
+    - Read and write files
+    - Create, move, copy, and delete files
+    - Combine paths
+    - Extract compressed files
+
 
 ## Examples
 
-To check if a file exists and print the result:
+Read the contents of a file
+```scala
+- <text> = FileRead Path: "MyFile.txt"
+- print <text>
+```
+
+Write to a file
 
 ```scala
-- Print (CheckFileExists 'c:\path\to\file.txt')
+- FileWrite Stream: "Hello World" Path: "Filename.txt"
 ```
 
 ### [Try FileSystem Connector](https://gitlab.com/reductech/edr/edr/-/releases)
