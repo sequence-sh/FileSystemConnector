@@ -40,6 +40,9 @@ public partial class DirectoryGetItemsTests : StepTestBase<DirectoryGetItems, Ar
         {
             var mfd = new MockFileData("");
 
+            var root      = new MockFileSystem().Directory.GetCurrentDirectory();
+            var separator = new MockFileSystem().Path.DirectorySeparatorChar;
+
             yield return new StepCase(
                 "Basic Case",
                 new DirectoryGetItems() { Directory = StaticHelpers.Constant("") },
@@ -50,9 +53,9 @@ public partial class DirectoryGetItemsTests : StepTestBase<DirectoryGetItems, Ar
                         BaseName      = "Alpha",
                         Children      = null,
                         CreationTime  = mfd.CreationTime.DateTime,
-                        Directory     = "C:\\",
+                        Directory     = root,
                         Extension     = ".txt",
-                        FullPath      = "C:\\Alpha.txt",
+                        FullPath      = $"{root}Alpha.txt",
                         IsFile        = true,
                         LastWriteTime = mfd.LastWriteTime.DateTime,
                         Name          = "Alpha.txt"
@@ -62,9 +65,9 @@ public partial class DirectoryGetItemsTests : StepTestBase<DirectoryGetItems, Ar
                         BaseName      = "temp",
                         Children      = null,
                         CreationTime  = mfd.CreationTime.DateTime,
-                        Directory     = "C:\\",
+                        Directory     = root,
                         Extension     = null,
-                        FullPath      = "C:\\temp",
+                        FullPath      = $"{root}temp",
                         IsFile        = false,
                         LastWriteTime = mfd.LastWriteTime.DateTime,
                         Name          = "temp"
@@ -84,7 +87,7 @@ public partial class DirectoryGetItemsTests : StepTestBase<DirectoryGetItems, Ar
                         CreationTime  = mfd.CreationTime.DateTime,
                         Directory     = "myDir",
                         Extension     = ".txt",
-                        FullPath      = "C:\\myDir\\Alpha.txt",
+                        FullPath      = $"{root}myDir{separator}Alpha.txt",
                         IsFile        = true,
                         LastWriteTime = mfd.LastWriteTime.DateTime,
                         Name          = "Alpha.txt"
@@ -108,7 +111,7 @@ public partial class DirectoryGetItemsTests : StepTestBase<DirectoryGetItems, Ar
                         CreationTime  = mfd.CreationTime.DateTime,
                         Directory     = "myDir",
                         Extension     = ".txt",
-                        FullPath      = "C:\\myDir\\Alpha.txt",
+                        FullPath      = $"{root}myDir{separator}Alpha.txt",
                         IsFile        = true,
                         LastWriteTime = mfd.LastWriteTime.DateTime,
                         Name          = "Alpha.txt"
@@ -128,7 +131,7 @@ public partial class DirectoryGetItemsTests : StepTestBase<DirectoryGetItems, Ar
                         CreationTime  = mfd.CreationTime.DateTime,
                         Directory     = "dira",
                         Extension     = ".txt",
-                        FullPath      = "C:\\dira\\Alpha.txt",
+                        FullPath      = $"{root}dira{separator}Alpha.txt",
                         IsFile        = true,
                         LastWriteTime = mfd.LastWriteTime.DateTime,
                         Name          = "Alpha.txt"
@@ -139,7 +142,7 @@ public partial class DirectoryGetItemsTests : StepTestBase<DirectoryGetItems, Ar
                         CreationTime  = mfd.CreationTime.DateTime,
                         Directory     = "dira",
                         Extension     = null,
-                        FullPath      = "C:\\dira\\dirb",
+                        FullPath      = $"{root}dira{separator}dirb",
                         IsFile        = false,
                         LastWriteTime = mfd.LastWriteTime.DateTime,
                         Name          = "dirb",
@@ -151,7 +154,7 @@ public partial class DirectoryGetItemsTests : StepTestBase<DirectoryGetItems, Ar
                                 CreationTime  = mfd.CreationTime.DateTime,
                                 Directory     = "dirb",
                                 Extension     = null,
-                                FullPath      = "C:\\dira\\dirb\\dirc",
+                                FullPath      = $"{root}dira{separator}dirb{separator}dirc",
                                 IsFile        = false,
                                 LastWriteTime = mfd.LastWriteTime.DateTime,
                                 Name          = "dirc",
@@ -165,8 +168,9 @@ public partial class DirectoryGetItemsTests : StepTestBase<DirectoryGetItems, Ar
                                             mfd.CreationTime.DateTime,
                                         Directory = "dirc",
                                         Extension = ".txt",
-                                        FullPath  = "C:\\dira\\dirb\\dirc\\Beta.txt",
-                                        IsFile    = true,
+                                        FullPath =
+                                            $"{root}dira{separator}dirb{separator}dirc{separator}Beta.txt",
+                                        IsFile = true,
                                         LastWriteTime =
                                             mfd.LastWriteTime.DateTime,
                                         Name = "Beta.txt"
