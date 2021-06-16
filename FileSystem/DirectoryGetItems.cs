@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
+using Newtonsoft.Json;
 using Reductech.EDR.Core;
 using Reductech.EDR.Core.Attributes;
 using Reductech.EDR.Core.Internal;
@@ -59,7 +61,7 @@ public class DirectoryGetItems : CompoundStep<Array<Entity>>
             return fileSystem.MapError(x => x.WithLocation(this))
                 .ConvertFailure<Array<Entity>>();
 
-        var entities = new List<Entity>();
+        var items = new List<Item>();
 
         var realPath = string.IsNullOrWhiteSpace(directory.Value)
             ? fileSystem.Value.Directory.GetCurrentDirectory()
@@ -68,7 +70,7 @@ public class DirectoryGetItems : CompoundStep<Array<Entity>>
         if (includeFiles.Value)
         {
             var files = EnumerateFiles(fileSystem.Value, realPath, pattern.Value);
-            entities.AddRange(files);
+            items.AddRange(files);
         }
 
         if (includeDirectories.Value)
@@ -81,34 +83,83 @@ public class DirectoryGetItems : CompoundStep<Array<Entity>>
                 includeFiles.Value
             );
 
-            entities.AddRange(directories);
+            items.AddRange(directories);
         }
 
-        return entities.ToSCLArray();
+        var entities = items.Select(x => x.ConvertToEntity()).ToSCLArray();
+
+        return entities;
     }
 
-    private const string NameKey = "Name";
-    private const string TypeKey = "Type";
-    private const string ChildrenKey = "Children";
-
-    private static Entity CreateFile(string name)
+    [Serializable]
+    private class Item : IEntityConvertible
     {
-        return Entity.Create((NameKey, name), (TypeKey, "File"));
+        [JsonProperty] public string Name { get; set; }
+        [JsonProperty] public string FullPath { get; set; }
+
+        /// <summary>
+        /// True for files, false for directories
+        /// </summary>
+        [JsonProperty]
+        public bool IsFile { get; set; }
+
+        [JsonProperty] public string Directory { get; set; }
+
+        [JsonProperty] public IReadOnlyList<Item>? Children { get; set; }
+
+        [JsonProperty] public string BaseName { get; set; }
+        [JsonProperty] public string? Extension { get; set; }
+
+        [JsonProperty] public DateTime CreationTime { get; set; }
+        [JsonProperty] public DateTime LastWriteTime { get; set; }
     }
 
-    private static Entity CreateDirectory(string name, IReadOnlyCollection<Entity> children)
+    private static Item CreateFile(IFileSystem fileSystem, string fullPath)
     {
-        if (children.Any())
+        var fileInfo = fileSystem.FileInfo.FromFileName(fullPath);
+        var baseName = fileSystem.Path.GetFileNameWithoutExtension(fileInfo.Name);
+
+        var item = new Item()
         {
-            return Entity.Create((NameKey, name), (TypeKey, "Directory"), (ChildrenKey, children));
-        }
-        else
-        {
-            return Entity.Create((NameKey, name), (TypeKey, "Directory"));
-        }
+            Name          = fileInfo.Name,
+            IsFile        = true,
+            CreationTime  = fileInfo.CreationTime,
+            LastWriteTime = fileInfo.LastWriteTime,
+            Children      = null,
+            Directory     = fileInfo.Directory?.Name ?? "",
+            BaseName      = baseName,
+            Extension     = fileInfo.Extension,
+            FullPath      = fullPath
+        };
+
+        return item;
     }
 
-    private static IEnumerable<Entity> EnumerateFiles(
+    private static Item CreateDirectory(
+        IFileSystem fileSystem,
+        string fullPath,
+        IReadOnlyList<Item> children)
+    {
+        var dirInfo  = fileSystem.DirectoryInfo.FromDirectoryName(fullPath);
+        var baseName = fileSystem.Path.GetFileNameWithoutExtension(dirInfo.Name);
+
+        var item = new Item()
+        {
+            Name          = dirInfo.Name,
+            IsFile        = false,
+            CreationTime  = dirInfo.CreationTime,
+            LastWriteTime = dirInfo.LastWriteTime,
+            Children      = children.Any() ? children : null,
+            Directory     = dirInfo.Parent?.Name ?? "",
+            BaseName      = baseName,
+            Extension     = null,
+            FullPath      = fullPath
+        };
+
+        return item;
+    }
+
+    private static IEnumerable<Item> EnumerateFiles(
         IFileSystem fileSystem,
         string path,
         string pattern)
@@ -122,12 +173,11 @@ public class DirectoryGetItems : CompoundStep<Array<Entity>>
 
         foreach (var name in names)
         {
-            var fileName = fileSystem.Path.GetFileName(name);
-            yield return CreateFile(fileName);
+            yield return CreateFile(fileSystem, name);
         }
     }
 
-    private static IEnumerable<Entity> EnumerateDirectories(
+    private static IEnumerable<Item> EnumerateDirectories(
         IFileSystem fileSystem,
         string path,
         string pattern,
@@ -143,7 +193,7 @@ public class DirectoryGetItems : CompoundStep<Array<Entity>>
 
         foreach (var name in names)
         {
-            var children = new List<Entity>();
+            var children = new List<Item>();
 
             if (addChildFiles || recursive)
             {
@@ -168,9 +218,7 @@ public class DirectoryGetItems : CompoundStep<Array<Entity>>
                     children.AddRange(dirs);
                 }
 
-                var dirName = fileSystem.Path.GetFileName(name);
-
-                var directory = CreateDirectory(dirName, children);
+                var directory = CreateDirectory(fileSystem, combinedPath, children);
                 yield return directory;
             }
         }

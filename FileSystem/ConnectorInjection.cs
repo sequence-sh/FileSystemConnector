@@ -8,9 +8,19 @@ using Reductech.EDR.Core.Internal.Errors;
 namespace Reductech.EDR.Connectors.FileSystem
 {
 
+/// <summary>
+/// For injection the connector context
+/// </summary>
 public sealed class ConnectorInjection : IConnectorInjection
 {
+    /// <summary>
+    /// The key for FileSystem injection
+    /// </summary>
     public const string FileSystemKey = "FileSystem.FileSystem";
+
+    /// <summary>
+    /// The key for Compression injection
+    /// </summary>
     public const string CompressionKey = "FileSystem.Compression";
 
     /// <inheritdoc />
