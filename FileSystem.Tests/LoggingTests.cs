@@ -8,7 +8,6 @@ using FluentAssertions;
 using MELT;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Reductech.EDR.Core;
 using Reductech.EDR.Core.Internal;
 using Reductech.EDR.Core.Internal.Serialization;
 using Reductech.EDR.Core.TestHarness;
@@ -31,6 +30,11 @@ public partial class LoggingTests
                     "No Path to combine",
                     "Log (PathCombine [])",
                     CheckMessageAndScope(LogLevel.Debug, "EDR Sequence Started", null),
+                    CheckMessageAndScope(
+                        LogLevel.Trace,
+                        "ConnectorSettings: (Connectors: [(Id: \"Reductech.EDR.Connectors.FileSystem\" Version: \"0.10.0\" Enable: True)])",
+                        null
+                    ),
                     CheckMessageAndScope(
                         LogLevel.Trace,
                         "Log Started with Parameters: [Value, PathCombine]",
@@ -80,6 +84,11 @@ public partial class LoggingTests
                 CheckMessageAndScope(LogLevel.Debug, "EDR Sequence Started", null),
                 CheckMessageAndScope(
                     LogLevel.Trace,
+                    "ConnectorSettings: (Connectors: [(Id: \"Reductech.EDR.Connectors.FileSystem\" Version: \"0.10.0\" Enable: True)])",
+                    null
+                ),
+                CheckMessageAndScope(
+                    LogLevel.Trace,
                     "Log Started with Parameters: [Value, PathCombine]",
                     new[] { "Log" }
                 ),
@@ -125,6 +134,11 @@ public partial class LoggingTests
                 "File Read",
                 "FileRead 'MyFile' | Log",
                 CheckMessageAndScope(LogLevel.Debug, "EDR Sequence Started", null),
+                CheckMessageAndScope(
+                    LogLevel.Trace,
+                    "ConnectorSettings: (Connectors: [(Id: \"Reductech.EDR.Connectors.FileSystem\" Version: \"0.10.0\" Enable: True)])",
+                    null
+                ),
                 CheckMessageAndScope(
                     LogLevel.Trace,
                     "Log Started with Parameters: [Value, FileRead]",
@@ -191,9 +205,7 @@ public partial class LoggingTests
         {
             var assembly = typeof(PathCombine).Assembly!;
 
-            var spf = StepFactoryStore.Create(
-                new ConnectorData(ConnectorSettings.DefaultForAssembly(assembly), assembly)
-            );
+            var spf = StepFactoryStore.CreateFromAssemblies(assembly);
 
             var loggerFactory = TestLoggerFactory.Create();
             loggerFactory.AddXunit(testOutputHelper);
@@ -204,7 +216,6 @@ public partial class LoggingTests
             var context = ExternalContextSetupHelper.GetExternalContext(repo);
 
             var sclRunner = new SCLRunner(
-                SCLSettings.EmptySettings,
                 logger,
                 spf,
                 context
