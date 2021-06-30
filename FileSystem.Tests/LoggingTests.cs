@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoTheory;
@@ -32,7 +33,7 @@ public partial class LoggingTests
                     CheckMessageAndScope(LogLevel.Debug, "EDR Sequence Started", null),
                     CheckMessageAndScope(
                         LogLevel.Trace,
-                        "ConnectorSettings: (Connectors: [(Id: \"Reductech.EDR.Connectors.FileSystem\" Version: \"0.10.0\" Enable: True)])",
+                        "ConnectorSettings: (Connectors:*",
                         null
                     ),
                     CheckMessageAndScope(
@@ -84,7 +85,7 @@ public partial class LoggingTests
                 CheckMessageAndScope(LogLevel.Debug, "EDR Sequence Started", null),
                 CheckMessageAndScope(
                     LogLevel.Trace,
-                    "ConnectorSettings: (Connectors: [(Id: \"Reductech.EDR.Connectors.FileSystem\" Version: \"0.10.0\" Enable: True)])",
+                    "ConnectorSettings: (Connectors:*",
                     null
                 ),
                 CheckMessageAndScope(
@@ -136,7 +137,7 @@ public partial class LoggingTests
                 CheckMessageAndScope(LogLevel.Debug, "EDR Sequence Started", null),
                 CheckMessageAndScope(
                     LogLevel.Trace,
-                    "ConnectorSettings: (Connectors: [(Id: \"Reductech.EDR.Connectors.FileSystem\" Version: \"0.10.0\" Enable: True)])",
+                    "ConnectorSettings: (Connectors:*",
                     null
                 ),
                 CheckMessageAndScope(
@@ -173,7 +174,7 @@ public partial class LoggingTests
         return entry =>
         {
             entry.LogLevel.Should().Be(logLevel);
-            entry.Message.Should().Be(expectedMessage);
+            entry.Message.Should().Match(expectedMessage);
 
             var trueExpectedScopes =
                 expectedScopes is null
