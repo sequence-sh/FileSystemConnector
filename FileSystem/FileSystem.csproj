@@ -31,7 +31,7 @@
     <PackageReference Include="Reductech.EDR.Core" Version="0.10.0-a.master.2106290944">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
-    <PackageReference Include="System.IO.Abstractions" Version="13.2.31" />
+    <PackageReference Include="System.IO.Abstractions" Version="13.2.38" />
   </ItemGroup>
 
   <PropertyGroup Condition="$(PackConnector) != ''">
