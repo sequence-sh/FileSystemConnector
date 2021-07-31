@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 		.gitlab-ci.yml = .gitlab-ci.yml
 		.gitlab\issue_templates\Bug.md = .gitlab\issue_templates\Bug.md
+		codecov.yml = codecov.yml
 		.config\dotnet-tools.json = .config\dotnet-tools.json
 		.gitlab\issue_templates\Feature.md = .gitlab\issue_templates\Feature.md
 		FileSystem.sln.DotSettings = FileSystem.sln.DotSettings
