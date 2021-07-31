@@ -40,9 +40,6 @@ public class DeleteItem : CompoundStep<Unit>
 
         try
         {
-            if (fileSystemResult.IsFailure)
-                return fileSystemResult.MapError(x => x.WithLocation(this)).ConvertFailure<Unit>();
-
             if (fileSystemResult.Value.Directory.Exists(path))
             {
                 fileSystemResult.Value.Directory.Delete(path, true);

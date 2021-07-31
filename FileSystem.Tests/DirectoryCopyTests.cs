@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using Reductech.EDR.Core.Internal.Errors;
 using Reductech.EDR.Core.TestHarness;
 using Reductech.EDR.Core.Util;
+using static Reductech.EDR.Core.TestHarness.StaticHelpers;
 
 namespace Reductech.EDR.Connectors.FileSystem.Tests
 {
@@ -16,10 +18,10 @@ public partial class DirectoryCopyTests : StepTestBase<DirectoryCopy, Unit>
                     "Copy Directory",
                     new DirectoryCopy
                     {
-                        SourceDirectory      = StaticHelpers.Constant("/MySource"),
-                        DestinationDirectory = StaticHelpers.Constant("/MyDestination"),
-                        Overwrite            = StaticHelpers.Constant(true),
-                        CopySubDirectories   = StaticHelpers.Constant(true)
+                        SourceDirectory      = Constant("/MySource"),
+                        DestinationDirectory = Constant("/MyDestination"),
+                        Overwrite            = Constant(true),
+                        CopySubDirectories   = Constant(true)
                     },
                     Unit.Default
                 )
@@ -38,6 +40,36 @@ public partial class DirectoryCopyTests : StepTestBase<DirectoryCopy, Unit>
                     },
                     new[] { "MySource", "MyDestination" }
                 );
+        }
+    }
+
+    /// <inheritdoc />
+    protected override IEnumerable<ErrorCase> ErrorCases
+    {
+        get
+        {
+            yield return new ErrorCase(
+                "IFileSystem Error",
+                new DirectoryCopy
+                {
+                    SourceDirectory      = Constant("Source"),
+                    DestinationDirectory = Constant("Destination")
+                },
+                new ErrorBuilder(ErrorCode.MissingContext, "IFileSystem")
+            );
+
+            yield return new ErrorCase(
+                "Directory does not exist",
+                new DirectoryCopy
+                {
+                    SourceDirectory      = Constant("Source"),
+                    DestinationDirectory = Constant("Destination")
+                },
+                ErrorCode.DirectoryNotFound.ToErrorBuilder("Source")
+            ).WithFileSystemMock(x => x.Setup(fs => fs.Directory.Exists("Source")).Returns(false));
+
+            foreach (var ec in base.ErrorCases)
+                yield return ec;
         }
     }
 }

@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Reductech.EDR.Core.Internal.Errors;
 using Reductech.EDR.Core.TestHarness;
 using Reductech.EDR.Core.Util;
+using static Reductech.EDR.Core.TestHarness.StaticHelpers;
 
 namespace Reductech.EDR.Connectors.FileSystem.Tests
 {
@@ -26,6 +29,40 @@ public partial class FileCopyTests : StepTestBase<FileCopy, Unit>
                 .WithExpectedFileSystem(
                     expectedFinalFiles: new[] { ("/MySource", "abc"), ("/MyDestination", "abc") }
                 );
+        }
+    }
+
+    /// <inheritdoc />
+    protected override IEnumerable<ErrorCase> ErrorCases
+    {
+        get
+        {
+            yield return new ErrorCase(
+                "IFileSystem Error",
+                new FileCopy
+                {
+                    SourceFile = Constant("Source"), DestinationFile = Constant("Destination")
+                },
+                new ErrorBuilder(ErrorCode.MissingContext, "IFileSystem")
+            );
+
+            yield return new ErrorCase(
+                "File.Copy Error",
+                new FileCopy
+                {
+                    SourceFile = Constant("Source"), DestinationFile = Constant("Destination")
+                },
+                new ErrorBuilder(
+                    new Exception("Ultimate Test Exception"),
+                    ErrorCode.ExternalProcessError
+                )
+            ).WithFileSystemMock(
+                x => x.Setup(fs => fs.File.Copy("Source", "Destination", false))
+                    .Throws(new Exception("Ultimate Test Exception"))
+            );
+
+            foreach (var ec in base.ErrorCases)
+                yield return ec;
         }
     }
 }

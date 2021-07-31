@@ -45,6 +45,12 @@ public partial class DirectoryCreateTests : StepTestBase<DirectoryCreate, Unit>
         get
         {
             yield return new ErrorCase(
+                "IFileSystem Error",
+                new DirectoryCreate { Path = Constant("My Path") },
+                new ErrorBuilder(ErrorCode.MissingContext, "IFileSystem")
+            );
+
+            yield return new ErrorCase(
                 "Error returned",
                 new DirectoryCreate { Path = Constant("MyPath") },
                 new ErrorBuilder(
@@ -55,6 +61,9 @@ public partial class DirectoryCreateTests : StepTestBase<DirectoryCreate, Unit>
                 x => x.Setup(fs => fs.Directory.CreateDirectory("MyPath"))
                     .Throws(new Exception("Ultimate Test Exception"))
             );
+
+            foreach (var ec in base.ErrorCases)
+                yield return ec;
         }
     }
 }

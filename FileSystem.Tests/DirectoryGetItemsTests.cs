@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO.Abstractions.TestingHelpers;
 using Newtonsoft.Json;
 using Reductech.EDR.Core;
+using Reductech.EDR.Core.Internal.Errors;
 using Reductech.EDR.Core.TestHarness;
+using static Reductech.EDR.Core.TestHarness.StaticHelpers;
 
 namespace Reductech.EDR.Connectors.FileSystem.Tests
 {
@@ -45,7 +47,7 @@ public partial class DirectoryGetItemsTests : StepTestBase<DirectoryGetItems, Ar
 
             yield return new StepCase(
                 "Basic Case",
-                new DirectoryGetItems() { Directory = StaticHelpers.Constant("") },
+                new DirectoryGetItems { Directory = Constant("") },
                 new[]
                 {
                     new Item()
@@ -77,7 +79,7 @@ public partial class DirectoryGetItemsTests : StepTestBase<DirectoryGetItems, Ar
 
             yield return new StepCase(
                 "Nested one level",
-                new DirectoryGetItems() { Directory = StaticHelpers.Constant("myDir") },
+                new DirectoryGetItems { Directory = Constant("myDir") },
                 new[]
                 {
                     new Item()
@@ -97,10 +99,9 @@ public partial class DirectoryGetItemsTests : StepTestBase<DirectoryGetItems, Ar
 
             yield return new StepCase(
                 "Simple pattern",
-                new DirectoryGetItems()
+                new DirectoryGetItems
                 {
-                    Directory = StaticHelpers.Constant("myDir"),
-                    Pattern   = StaticHelpers.Constant("*.txt")
+                    Directory = Constant("myDir"), Pattern = Constant("*.txt")
                 },
                 new[]
                 {
@@ -121,7 +122,7 @@ public partial class DirectoryGetItemsTests : StepTestBase<DirectoryGetItems, Ar
 
             yield return new StepCase(
                 "Recursive Case",
-                new DirectoryGetItems() { Directory = StaticHelpers.Constant("dira") },
+                new DirectoryGetItems { Directory = Constant("dira") },
                 new[]
                 {
                     new Item()
@@ -181,6 +182,22 @@ public partial class DirectoryGetItemsTests : StepTestBase<DirectoryGetItems, Ar
                     }.ConvertToEntity(),
                 }.ToSCLArray()
             ).WithFileSystem(new[] { ("dira/Alpha.txt", "a"), ("dira/dirb/dirc/Beta.txt", "a") });
+        }
+    }
+
+    /// <inheritdoc />
+    protected override IEnumerable<ErrorCase> ErrorCases
+    {
+        get
+        {
+            yield return new ErrorCase(
+                "IFileSystem Error",
+                new DirectoryGetItems { Directory = Constant("Directory") },
+                new ErrorBuilder(ErrorCode.MissingContext, "IFileSystem")
+            );
+
+            foreach (var ec in base.ErrorCases)
+                yield return ec;
         }
     }
 }
