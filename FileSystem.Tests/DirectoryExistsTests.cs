@@ -36,7 +36,7 @@ public partial class DirectoryExistsTests : StepTestBase<DirectoryExists, bool>
         get
         {
             yield return new ErrorCase(
-                "DirectoryExists Context Error",
+                "IFileSystem Error",
                 new DirectoryExists { Path = Constant("My Path") },
                 new ErrorBuilder(ErrorCode.MissingContext, "IFileSystem")
             );

@@ -36,7 +36,7 @@ public partial class FileExistsTests : StepTestBase<FileExists, bool>
         get
         {
             yield return new ErrorCase(
-                "FileSystem Context Error",
+                "IFileSystem Error",
                 new FileExists { Path = Constant("My Path") },
                 new ErrorBuilder(ErrorCode.MissingContext, "IFileSystem")
             );
