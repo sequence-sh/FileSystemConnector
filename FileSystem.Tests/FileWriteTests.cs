@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Reductech.EDR.Core;
 using Reductech.EDR.Core.Internal;
+using Reductech.EDR.Core.Internal.Errors;
 using Reductech.EDR.Core.Steps;
 using Reductech.EDR.Core.TestHarness;
 using Reductech.EDR.Core.Util;
@@ -60,6 +62,31 @@ public partial class FileWriteTests : StepTestBase<FileWrite, Unit>
                 )
                 .WithFileSystem()
                 .WithExpectedFileSystem();
+        }
+    }
+
+    /// <inheritdoc />
+    protected override IEnumerable<ErrorCase> ErrorCases
+    {
+        get
+        {
+            yield return new ErrorCase(
+                "IFileSystem Error",
+                new FileWrite { Stream = Constant("Data"), Path = Constant("Destination") },
+                new ErrorBuilder(ErrorCode.MissingContext, "IFileSystem")
+            );
+
+            yield return new ErrorCase(
+                "File.Create Error",
+                new FileWrite { Stream = Constant("Data"), Path = Constant("Destination") },
+                ErrorCode.ExternalProcessError.ToErrorBuilder("Ultimate Test Exception")
+            ).WithFileSystemMock(
+                x => x.Setup(fs => fs.File.Create("Destination"))
+                    .Throws(new Exception("Ultimate Test Exception"))
+            );
+
+            foreach (var ec in base.ErrorCases)
+                yield return ec;
         }
     }
 }
