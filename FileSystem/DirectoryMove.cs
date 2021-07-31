@@ -58,6 +58,7 @@ public class DirectoryMove : CompoundStep<Unit>
     /// </summary>
     [StepProperty(1)]
     [Required]
+    [Alias("Source")]
     public IStep<StringStream> SourceDirectory { get; set; } = null!;
 
     /// <summary>
@@ -65,6 +66,7 @@ public class DirectoryMove : CompoundStep<Unit>
     /// </summary>
     [StepProperty(2)]
     [Required]
+    [Alias("Destination")]
     public IStep<StringStream> DestinationDirectory { get; set; } = null!;
 
     /// <inheritdoc />
