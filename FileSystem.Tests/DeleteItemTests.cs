@@ -49,23 +49,30 @@ public partial class DeleteItemTests : StepTestBase<DeleteItem, Unit>
         get
         {
             yield return new ErrorCase(
-                        "Could not delete file",
-                        new DeleteItem { Path = Constant("My Path") },
-                        new ErrorBuilder(
-                            new Exception("Ultimate Test Exception"),
-                            ErrorCode.ExternalProcessError
-                        )
-                    )
-                    .WithFileSystemMock(
-                        x =>
-                        {
-                            x.Setup(fs => fs.Directory.Exists("My Path")).Returns(true);
+                "IFileSystem Error",
+                new DeleteItem { Path = Constant("My Path") },
+                new ErrorBuilder(ErrorCode.MissingContext, "IFileSystem")
+            );
 
-                            x.Setup(fs => fs.Directory.Delete("My Path", true))
-                                .Throws(new Exception("Ultimate Test Exception"));
-                        }
-                    )
-                ;
+            yield return new ErrorCase(
+                "Could not delete file",
+                new DeleteItem { Path = Constant("My Path") },
+                new ErrorBuilder(
+                    new Exception("Ultimate Test Exception"),
+                    ErrorCode.ExternalProcessError
+                )
+            ).WithFileSystemMock(
+                x =>
+                {
+                    x.Setup(fs => fs.Directory.Exists("My Path")).Returns(true);
+
+                    x.Setup(fs => fs.Directory.Delete("My Path", true))
+                        .Throws(new Exception("Ultimate Test Exception"));
+                }
+            );
+
+            foreach (var ec in base.ErrorCases)
+                yield return ec;
         }
     }
 }
