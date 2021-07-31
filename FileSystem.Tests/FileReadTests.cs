@@ -66,8 +66,14 @@ public partial class FileReadTests : StepTestBase<FileRead, StringStream>
         get
         {
             yield return new ErrorCase(
+                "IFileSystem Error",
+                new FileRead { Path = Constant("File.txt") },
+                new ErrorBuilder(ErrorCode.MissingContext, "IFileSystem")
+            );
+
+            yield return new ErrorCase(
                 "File Read Error",
-                new FileRead { Path = Constant("File.txt"), },
+                new FileRead { Path = Constant("File.txt") },
                 new ErrorBuilder(
                     new Exception("Ultimate Test Exception"),
                     ErrorCode.ExternalProcessError
@@ -75,7 +81,10 @@ public partial class FileReadTests : StepTestBase<FileRead, StringStream>
             ).WithFileSystemMock(
                 x => x.Setup(fs => fs.File.OpenRead("File.txt"))
                     .Throws(new Exception("Ultimate Test Exception"))
-            ); //TODO errors
+            );
+
+            foreach (var ec in base.ErrorCases)
+                yield return ec;
         }
     }
 }
