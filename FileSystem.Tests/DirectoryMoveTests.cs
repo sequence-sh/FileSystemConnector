@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Reductech.EDR.Core.Internal.Errors;
 using Reductech.EDR.Core.TestHarness;
 using Reductech.EDR.Core.Util;
+using static Reductech.EDR.Core.TestHarness.StaticHelpers;
 
 namespace Reductech.EDR.Connectors.FileSystem.Tests
 {
@@ -22,6 +25,42 @@ public partial class DirectoryMoveTests : StepTestBase<DirectoryMove, Unit>
                     Unit.Default
                 ).WithFileSystem(initialDirectories: new[] { "MySource" })
                 .WithExpectedFileSystem(expectedFinalDirectories: new[] { "MyDestination" });
+        }
+    }
+
+    /// <inheritdoc />
+    protected override IEnumerable<ErrorCase> ErrorCases
+    {
+        get
+        {
+            yield return new ErrorCase(
+                "IFileSystem Error",
+                new DirectoryMove
+                {
+                    SourceDirectory      = Constant("Source"),
+                    DestinationDirectory = Constant("Destination")
+                },
+                new ErrorBuilder(ErrorCode.MissingContext, "IFileSystem")
+            );
+
+            yield return new ErrorCase(
+                "Directory.Move Error",
+                new DirectoryMove
+                {
+                    SourceDirectory      = Constant("Source"),
+                    DestinationDirectory = Constant("Destination")
+                },
+                new ErrorBuilder(
+                    new Exception("Ultimate Test Exception"),
+                    ErrorCode.ExternalProcessError
+                )
+            ).WithFileSystemMock(
+                x => x.Setup(fs => fs.Directory.Move("Source", "Destination"))
+                    .Throws(new Exception("Ultimate Test Exception"))
+            );
+
+            foreach (var ec in base.ErrorCases)
+                yield return ec;
         }
     }
 }
