@@ -33,7 +33,7 @@ public partial class LoggingTests
                     CheckMessageAndScope(LogLevel.Debug, "EDR Sequence Started", null),
                     CheckMessageAndScope(
                         LogLevel.Trace,
-                        "ConnectorSettings: (Connectors:*",
+                        "ConnectorSettings: ('Connectors': ('Reductech.EDR.Connectors.FileSystem': ('Id': \"Reductech.EDR.Connectors.FileSystem\" 'Version': \"0.10.0\" 'Enable': True)))",
                         null
                     ),
                     CheckMessageAndScope(
@@ -85,7 +85,7 @@ public partial class LoggingTests
                 CheckMessageAndScope(LogLevel.Debug, "EDR Sequence Started", null),
                 CheckMessageAndScope(
                     LogLevel.Trace,
-                    "ConnectorSettings: (Connectors:*",
+                    "ConnectorSettings: ('Connectors': ('Reductech.EDR.Connectors.FileSystem': ('Id': \"Reductech.EDR.Connectors.FileSystem\" 'Version': \"0.10.0\" 'Enable': True)))",
                     null
                 ),
                 CheckMessageAndScope(
@@ -137,7 +137,7 @@ public partial class LoggingTests
                 CheckMessageAndScope(LogLevel.Debug, "EDR Sequence Started", null),
                 CheckMessageAndScope(
                     LogLevel.Trace,
-                    "ConnectorSettings: (Connectors:*",
+                    "ConnectorSettings: ('Connectors': ('Reductech.EDR.Connectors.FileSystem': ('Id': \"Reductech.EDR.Connectors.FileSystem\" 'Version': \"0.10.0\" 'Enable': True)))",
                     null
                 ),
                 CheckMessageAndScope(
