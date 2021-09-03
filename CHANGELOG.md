@@ -1,3 +1,13 @@
+# v0.11.0 (2021-09-03)
+
+Maintenace release - dependency updates and improved testing.
+
+## Issues Closed in this Release
+
+### Maintenance
+
+- Add unit tests to improve coverage #13
+
 # v0.10.0 (2021-07-02)
 
 ## Issues Closed in this Release
