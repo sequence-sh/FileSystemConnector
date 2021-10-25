@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
-using Newtonsoft.Json;
 using Reductech.EDR.Core;
 using Reductech.EDR.Core.Attributes;
 using Reductech.EDR.Core.Internal;
@@ -94,24 +93,35 @@ public class DirectoryGetItems : CompoundStep<Array<Entity>>
     [Serializable]
     private class Item : IEntityConvertible
     {
-        [JsonProperty] public string Name { get; set; }
-        [JsonProperty] public string FullPath { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("Name")]
+        public string Name { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("FullPath")]
+        public string FullPath { get; set; }
 
         /// <summary>
         /// True for files, false for directories
         /// </summary>
-        [JsonProperty]
+        [System.Text.Json.Serialization.JsonPropertyName("IsFile")]
         public bool IsFile { get; set; }
 
-        [JsonProperty] public string Directory { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("Directory")]
+        public string Directory { get; set; }
 
-        [JsonProperty] public IReadOnlyList<Item>? Children { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("Children")]
+        public IReadOnlyList<Item>? Children { get; set; }
 
-        [JsonProperty] public string BaseName { get; set; }
-        [JsonProperty] public string? Extension { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("BaseName")]
+        public string BaseName { get; set; }
 
-        [JsonProperty] public DateTime CreationTime { get; set; }
-        [JsonProperty] public DateTime LastWriteTime { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("Extension")]
+        public string? Extension { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("CreationTime")]
+        public DateTime CreationTime { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("LastWriteTime")]
+        public DateTime LastWriteTime { get; set; }
     }
 
     private static Item CreateFile(IFileSystem fileSystem, string fullPath)

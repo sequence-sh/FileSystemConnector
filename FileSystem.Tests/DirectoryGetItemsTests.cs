@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO.Abstractions.TestingHelpers;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using Reductech.EDR.Core;
 using Reductech.EDR.Core.Internal.Errors;
 using Reductech.EDR.Core.TestHarness;
@@ -15,24 +15,24 @@ public partial class DirectoryGetItemsTests : StepTestBase<DirectoryGetItems, Ar
     [Serializable]
     private class Item : IEntityConvertible
     {
-        [JsonProperty] public string Name { get; set; }
-        [JsonProperty] public string FullPath { get; set; }
+        [JsonPropertyName("Name")] public string Name { get; set; }
+        [JsonPropertyName("FullPath")] public string FullPath { get; set; }
 
         /// <summary>
         /// True for files, false for directories
         /// </summary>
-        [JsonProperty]
+        [JsonPropertyName("IsFile")]
         public bool IsFile { get; set; }
 
-        [JsonProperty] public string Directory { get; set; }
+        [JsonPropertyName("Directory")] public string Directory { get; set; }
 
-        [JsonProperty] public IReadOnlyList<Item>? Children { get; set; }
+        [JsonPropertyName("Children")] public IReadOnlyList<Item>? Children { get; set; }
 
-        [JsonProperty] public string BaseName { get; set; }
-        [JsonProperty] public string? Extension { get; set; }
+        [JsonPropertyName("BaseName")] public string BaseName { get; set; }
+        [JsonPropertyName("Extension")] public string? Extension { get; set; }
 
-        [JsonProperty] public DateTime CreationTime { get; set; }
-        [JsonProperty] public DateTime LastWriteTime { get; set; }
+        [JsonPropertyName("CreationTime")] public DateTime CreationTime { get; set; }
+        [JsonPropertyName("LastWriteTime")] public DateTime LastWriteTime { get; set; }
     }
 
     /// <inheritdoc />
