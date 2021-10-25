@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoTheory;
@@ -9,6 +8,7 @@ using FluentAssertions;
 using MELT;
 using Microsoft.Extensions.Logging;
 using Moq;
+using Reductech.EDR.Core;
 using Reductech.EDR.Core.Internal;
 using Reductech.EDR.Core.Internal.Serialization;
 using Reductech.EDR.Core.TestHarness;
@@ -204,7 +204,7 @@ public partial class LoggingTests
         /// <inheritdoc />
         public async Task RunAsync(ITestOutputHelper testOutputHelper)
         {
-            var assembly = typeof(PathCombine).Assembly!;
+            var assembly = typeof(PathCombine).Assembly;
 
             var spf = StepFactoryStore.CreateFromAssemblies(assembly);
 
@@ -219,7 +219,8 @@ public partial class LoggingTests
             var sclRunner = new SCLRunner(
                 logger,
                 spf,
-                context
+                context,
+                new SingleRestClientFactory(RESTClientSetupHelper.GetRESTClient(repo, FinalChecks))
             );
 
             var r = await sclRunner.RunSequenceFromTextAsync(
@@ -235,6 +236,11 @@ public partial class LoggingTests
 
         /// <inheritdoc />
         public ExternalContextSetupHelper ExternalContextSetupHelper { get; } = new();
+
+        public RESTClientSetupHelper RESTClientSetupHelper { get; } = new();
+
+        /// <inheritdoc />
+        public List<Action> FinalChecks { get; } = new();
     }
 }
 
