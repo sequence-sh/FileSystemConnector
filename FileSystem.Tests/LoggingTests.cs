@@ -204,23 +204,28 @@ public partial class LoggingTests
         /// <inheritdoc />
         public async Task RunAsync(ITestOutputHelper testOutputHelper)
         {
+            var repo = new MockRepository(MockBehavior.Strict);
+
             var assembly = typeof(PathCombine).Assembly;
 
-            var spf = StepFactoryStore.CreateFromAssemblies(assembly);
+            var externalContext = ExternalContextSetupHelper.GetExternalContext(
+                repo,
+                repo.OneOf<IRestClientFactory>()
+            );
+
+            var sfsResult = StepFactoryStore.TryCreateFromAssemblies(externalContext, assembly);
+
+            sfsResult.ShouldBeSuccessful();
 
             var loggerFactory = TestLoggerFactory.Create();
             loggerFactory.AddXunit(testOutputHelper);
 
             var logger = loggerFactory.CreateLogger("Test");
-            var repo   = new MockRepository(MockBehavior.Strict);
-
-            var context = ExternalContextSetupHelper.GetExternalContext(repo);
 
             var sclRunner = new SCLRunner(
                 logger,
-                spf,
-                context,
-                new SingleRestClientFactory(RESTClientSetupHelper.GetRESTClient(repo, FinalChecks))
+                sfsResult.Value,
+                externalContext
             );
 
             var r = await sclRunner.RunSequenceFromTextAsync(
