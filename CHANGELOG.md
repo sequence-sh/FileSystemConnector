@@ -1,3 +1,7 @@
+# v0.12.0 (2021-11-26)
+
+Maintenance release - dependency updates only.
+
 # v0.11.0 (2021-09-03)
 
 Maintenace release - dependency updates and improved testing.
@@ -48,3 +52,4 @@ First release. Versions numbers are aligned with Core.
 
 - Enable publish to connector registry #2
 - Move in steps and tests from Core #1
+
