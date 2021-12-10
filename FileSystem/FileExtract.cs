@@ -1,16 +1,6 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Threading;
-using System.Threading.Tasks;
-using CSharpFunctionalExtensions;
-using Reductech.EDR.Core;
-using Reductech.EDR.Core.Attributes;
-using Reductech.EDR.Core.Internal;
-using Reductech.EDR.Core.Internal.Errors;
-using Reductech.EDR.Core.Util;
+﻿using Reductech.EDR.Core.Internal.Errors;
 
-namespace Reductech.EDR.Connectors.FileSystem
-{
+namespace Reductech.EDR.Connectors.FileSystem;
 
 /// <summary>
 /// Extract a file in the file system.
@@ -91,6 +81,4 @@ public class FileExtract : CompoundStep<Unit>
 
     /// <inheritdoc />
     public override IStepFactory StepFactory { get; } = new SimpleStepFactory<FileExtract, Unit>();
-}
-
 }

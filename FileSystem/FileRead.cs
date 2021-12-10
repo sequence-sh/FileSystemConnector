@@ -1,17 +1,7 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.IO.Abstractions;
-using System.Threading;
-using System.Threading.Tasks;
-using CSharpFunctionalExtensions;
-using Reductech.EDR.Core;
-using Reductech.EDR.Core.Attributes;
-using Reductech.EDR.Core.Enums;
-using Reductech.EDR.Core.Internal;
+﻿using Reductech.EDR.Core.Enums;
 using Reductech.EDR.Core.Internal.Errors;
 
-namespace Reductech.EDR.Connectors.FileSystem
-{
+namespace Reductech.EDR.Connectors.FileSystem;
 
 /// <summary>
 /// Reads text from a file.
@@ -95,6 +85,4 @@ public sealed class FileRead : CompoundStep<StringStream>
     /// <inheritdoc />
     public override IStepFactory StepFactory { get; } =
         new SimpleStepFactory<FileRead, StringStream>();
-}
-
 }

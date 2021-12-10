@@ -1,18 +1,6 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
-using System.IO.Abstractions;
-using System.Threading;
-using System.Threading.Tasks;
-using CSharpFunctionalExtensions;
-using Reductech.EDR.Core;
-using Reductech.EDR.Core.Attributes;
-using Reductech.EDR.Core.Internal;
-using Reductech.EDR.Core.Internal.Errors;
-using Reductech.EDR.Core.Util;
+﻿using Reductech.EDR.Core.Internal.Errors;
 
-namespace Reductech.EDR.Connectors.FileSystem
-{
+namespace Reductech.EDR.Connectors.FileSystem;
 
 /// <summary>
 /// Writes a file to the local file system.
@@ -130,6 +118,4 @@ public sealed class FileWrite : CompoundStep<Unit>
 
     /// <inheritdoc />
     public override IStepFactory StepFactory { get; } = new SimpleStepFactory<FileWrite, Unit>();
-}
-
 }

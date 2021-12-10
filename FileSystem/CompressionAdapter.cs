@@ -1,5 +1,4 @@
-﻿namespace Reductech.EDR.Connectors.FileSystem
-{
+﻿namespace Reductech.EDR.Connectors.FileSystem;
 
 /// <summary>
 /// Default implementation of ICompression
@@ -18,6 +17,4 @@ public class CompressionAdapter : ICompression
             overwrite
         );
     }
-}
-
 }

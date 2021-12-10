@@ -1,5 +1,4 @@
-﻿namespace Reductech.EDR.Connectors.FileSystem
-{
+﻿namespace Reductech.EDR.Connectors.FileSystem;
 
 /// <summary>
 /// Abstraction layer for System.IO.Compression
@@ -13,6 +12,4 @@ public interface ICompression
         string sourceArchiveFileName,
         string destinationDirectoryName,
         bool overwrite);
-}
-
 }

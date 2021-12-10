@@ -1,18 +1,7 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.IO.Abstractions;
-using System.Threading;
-using System.Threading.Tasks;
-using CSharpFunctionalExtensions;
-using Reductech.EDR.Core;
-using Reductech.EDR.Core.Attributes;
-using Reductech.EDR.Core.Internal;
-using Reductech.EDR.Core.Internal.Errors;
+﻿using Reductech.EDR.Core.Internal.Errors;
 using Reductech.EDR.Core.Internal.Logging;
-using Reductech.EDR.Core.Util;
 
-namespace Reductech.EDR.Connectors.FileSystem
-{
+namespace Reductech.EDR.Connectors.FileSystem;
 
 /// <summary>
 /// Deletes a file or folder from the file system.
@@ -74,6 +63,4 @@ public class DeleteItem : CompoundStep<Unit>
 
     /// <inheritdoc />
     public override IStepFactory StepFactory { get; } = new SimpleStepFactory<DeleteItem, Unit>();
-}
-
 }
