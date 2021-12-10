@@ -1,11 +1,7 @@
-﻿using System.Collections.Generic;
-using System.IO.Abstractions;
-using CSharpFunctionalExtensions;
-using Reductech.EDR.Core.Connectors;
+﻿using Reductech.EDR.Core.Connectors;
 using Reductech.EDR.Core.Internal.Errors;
 
-namespace Reductech.EDR.Connectors.FileSystem
-{
+namespace Reductech.EDR.Connectors.FileSystem;
 
 /// <summary>
 /// For injecting the connector context
@@ -39,6 +35,4 @@ public sealed class ConnectorInjection : IConnectorInjection
             list
         );
     }
-}
-
 }
