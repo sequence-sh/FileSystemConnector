@@ -72,15 +72,15 @@ public sealed class FileRead : CompoundStep<StringStream>
     /// </summary>
     [StepProperty(2)]
     [DefaultValueExplanation("UTF8 no BOM")]
-    public IStep<EncodingEnum> Encoding { get; set; } =
-        new EnumConstant<EncodingEnum>(EncodingEnum.UTF8);
+    public IStep<SCLEnum<EncodingEnum>> Encoding { get; set; } =
+        new SCLConstant<SCLEnum<EncodingEnum>>(new SCLEnum<EncodingEnum>(EncodingEnum.UTF8));
 
     /// <summary>
     /// Whether to decompress this string
     /// </summary>
     [StepProperty(3)]
     [DefaultValueExplanation("false")]
-    public IStep<bool> Decompress { get; set; } = new BoolConstant(false);
+    public IStep<SCLBool> Decompress { get; set; } = new SCLConstant<SCLBool>(SCLBool.False);
 
     /// <inheritdoc />
     public override IStepFactory StepFactory { get; } =

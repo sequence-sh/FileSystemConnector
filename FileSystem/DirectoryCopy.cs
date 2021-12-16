@@ -74,14 +74,15 @@ public class DirectoryCopy : CompoundStep<Unit>
     /// </summary>
     [StepProperty(3)]
     [DefaultValueExplanation("false")]
-    public IStep<bool> Overwrite { get; set; } = new BoolConstant(false);
+    public IStep<SCLBool> Overwrite { get; set; } = new SCLConstant<SCLBool>(SCLBool.False);
 
     /// <summary>
     /// True to also copy subdirectories
     /// </summary>
     [StepProperty(4)]
     [DefaultValueExplanation("false")]
-    public IStep<bool> CopySubDirectories { get; set; } = new BoolConstant(false);
+    public IStep<SCLBool> CopySubDirectories { get; set; } =
+        new SCLConstant<SCLBool>(SCLBool.False);
 
     /// <inheritdoc />
     public override IStepFactory StepFactory { get; } =
