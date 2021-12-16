@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoTheory;
@@ -28,27 +29,27 @@ public partial class LoggingTests
                     CheckMessageAndScope(LogLevel.Debug, "EDR Sequence Started", null),
                     CheckMessageAndScope(
                         LogLevel.Trace,
-                        "ConnectorSettings: ('Connectors': ('Reductech.EDR.Connectors.FileSystem': ('Id': \"Reductech.EDR.Connectors.FileSystem\" 'Version': \"*\" 'Enable': True)))",
+                        new Regex("ConnectorSettings"),
                         null
                     ),
                     CheckMessageAndScope(
                         LogLevel.Trace,
-                        "Log Started with Parameters: [Value, PathCombine]",
+                        "Log Started with Parameters: [Value, (PathCombine Paths: [])]",
                         new[] { "Log" }
                     ),
                     CheckMessageAndScope(
                         LogLevel.Trace,
-                        "PathCombine Started with Parameters: [Paths, ArrayNew]",
+                        "PathCombine Started with Parameters: [Paths, []]",
                         new[] { "Log", "PathCombine" }
                     ),
                     CheckMessageAndScope(
                         LogLevel.Trace,
-                        "ArrayNew Started with Parameters: [Elements, 0 Elements]",
+                        "ArrayNew Started with Parameters: [Elements, []]",
                         new[] { "Log", "PathCombine", "ArrayNew" }
                     ),
                     CheckMessageAndScope(
                         LogLevel.Trace,
-                        "ArrayNew Completed Successfully with Result: 0 Elements",
+                        "ArrayNew Completed Successfully with Result: []",
                         new[] { "Log", "PathCombine", "ArrayNew" }
                     ),
                     CheckMessageAndScope(
@@ -80,27 +81,27 @@ public partial class LoggingTests
                 CheckMessageAndScope(LogLevel.Debug, "EDR Sequence Started", null),
                 CheckMessageAndScope(
                     LogLevel.Trace,
-                    "ConnectorSettings: ('Connectors': ('Reductech.EDR.Connectors.FileSystem': ('Id': \"Reductech.EDR.Connectors.FileSystem\" 'Version': \"*\" 'Enable': True)))",
+                    new Regex("ConnectorSettings"),
                     null
                 ),
                 CheckMessageAndScope(
                     LogLevel.Trace,
-                    "Log Started with Parameters: [Value, PathCombine]",
+                    "Log Started with Parameters: [Value, (PathCombine Paths: [string Length: 4])]",
                     new[] { "Log" }
                 ),
                 CheckMessageAndScope(
                     LogLevel.Trace,
-                    "PathCombine Started with Parameters: [Paths, ArrayNew]",
+                    "PathCombine Started with Parameters: [Paths, [string Length: 4]]",
                     new[] { "Log", "PathCombine" }
                 ),
                 CheckMessageAndScope(
                     LogLevel.Trace,
-                    "ArrayNew Started with Parameters: [Elements, 1 Elements]",
+                    "ArrayNew Started with Parameters: [Elements, [string Length: 4]]",
                     new[] { "Log", "PathCombine", "ArrayNew" }
                 ),
                 CheckMessageAndScope(
                     LogLevel.Trace,
-                    "ArrayNew Completed Successfully with Result: 1 Elements",
+                    "ArrayNew Completed Successfully with Result: [string Length: 4]",
                     new[] { "Log", "PathCombine", "ArrayNew" }
                 ),
                 CheckMessageAndScope(
@@ -132,17 +133,17 @@ public partial class LoggingTests
                 CheckMessageAndScope(LogLevel.Debug, "EDR Sequence Started", null),
                 CheckMessageAndScope(
                     LogLevel.Trace,
-                    "ConnectorSettings: ('Connectors': ('Reductech.EDR.Connectors.FileSystem': ('Id': \"Reductech.EDR.Connectors.FileSystem\" 'Version': \"*\" 'Enable': True)))",
+                    new Regex("ConnectorSettings"),
                     null
                 ),
                 CheckMessageAndScope(
                     LogLevel.Trace,
-                    "Log Started with Parameters: [Value, FileRead]",
+                    "Log Started with Parameters: [Value, (FileRead Path: string Length: 6 Encoding: EncodingEnum.UTF8 Decompress: False)]",
                     new[] { "Log" }
                 ),
                 CheckMessageAndScope(
                     LogLevel.Trace,
-                    "FileRead Started with Parameters: [Path, \"MyFile\"], [Encoding, UTF8], [Decompress, False]",
+                    "FileRead Started with Parameters: [Path, string Length: 6], [Encoding, EncodingEnum.UTF8], [Decompress, False]",
                     new[] { "Log", "FileRead" }
                 ),
                 CheckMessageAndScope(
@@ -159,6 +160,27 @@ public partial class LoggingTests
                 CheckMessageAndScope(LogLevel.Debug, "EDR Sequence Completed", null)
             ).WithFileSystem(initialFiles: new[] { ("MyFile", "MyData") });
         }
+    }
+
+    private static Action<LogEntry> CheckMessageAndScope(
+        LogLevel logLevel,
+        Regex messageRegex,
+        IReadOnlyList<string>? expectedScopes)
+    {
+        return entry =>
+        {
+            entry.LogLevel.Should().Be(logLevel);
+            entry.Message.Should().MatchRegex(messageRegex);
+
+            var trueExpectedScopes =
+                expectedScopes is null
+                    ? new List<string>() { "EDR" }
+                    : expectedScopes.Prepend("EDR").ToList();
+
+            entry.Scopes.Select(x => x.Message)
+                .Should()
+                .BeEquivalentTo(trueExpectedScopes);
+        };
     }
 
     private static Action<LogEntry> CheckMessageAndScope(

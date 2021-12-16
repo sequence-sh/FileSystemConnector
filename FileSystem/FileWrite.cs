@@ -78,14 +78,12 @@ public sealed class FileWrite : CompoundStep<Unit>
             writeStream.Close();
             error = Maybe<IErrorBuilder>.None;
         }
-        #pragma warning disable CA1031 // Do not catch general exception types
         catch (Exception e)
         {
             error = Maybe<IErrorBuilder>.From(
                 ErrorCode.ExternalProcessError.ToErrorBuilder(e.Message)
             );
         }
-        #pragma warning restore CA1031 // Do not catch general exception types
 
         if (error.HasValue)
             return Result.Failure<Unit, IErrorBuilder>(error.Value);
@@ -114,7 +112,7 @@ public sealed class FileWrite : CompoundStep<Unit>
     /// </summary>
     [StepProperty(3)]
     [DefaultValueExplanation("false")]
-    public IStep<bool> Compress { get; set; } = new BoolConstant(false);
+    public IStep<SCLBool> Compress { get; set; } = new SCLConstant<SCLBool>(SCLBool.False);
 
     /// <inheritdoc />
     public override IStepFactory StepFactory { get; } = new SimpleStepFactory<FileWrite, Unit>();

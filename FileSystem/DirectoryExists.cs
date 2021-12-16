@@ -6,7 +6,7 @@ namespace Reductech.EDR.Connectors.FileSystem;
 /// Returns whether a directory on the file system exists.
 /// </summary>
 [Alias("DoesDirectoryExist")]
-public class DirectoryExists : CompoundStep<bool>
+public class DirectoryExists : CompoundStep<SCLBool>
 {
     /// <summary>
     /// The path to the folder to check.
@@ -17,14 +17,14 @@ public class DirectoryExists : CompoundStep<bool>
     public IStep<StringStream> Path { get; set; } = null!;
 
     /// <inheritdoc />
-    protected override async Task<Result<bool, IError>> Run(
+    protected override async Task<Result<SCLBool, IError>> Run(
         IStateMonad stateMonad,
         CancellationToken cancellationToken)
     {
         var pathResult = await Path.Run(stateMonad, cancellationToken);
 
         if (pathResult.IsFailure)
-            return pathResult.ConvertFailure<bool>();
+            return pathResult.ConvertFailure<SCLBool>();
 
         var pathString = await pathResult.Value.GetStringAsync();
 
@@ -32,12 +32,12 @@ public class DirectoryExists : CompoundStep<bool>
             stateMonad.ExternalContext.TryGetContext<IFileSystem>(ConnectorInjection.FileSystemKey);
 
         if (fileSystemResult.IsFailure)
-            return fileSystemResult.MapError(x => x.WithLocation(this)).ConvertFailure<bool>();
+            return fileSystemResult.MapError(x => x.WithLocation(this)).ConvertFailure<SCLBool>();
 
         try
         {
             var r = fileSystemResult.Value.Directory.Exists(pathString);
-            return r;
+            return r.ConvertToSCLObject();
         }
         catch (Exception e)
         {
@@ -47,5 +47,5 @@ public class DirectoryExists : CompoundStep<bool>
 
     /// <inheritdoc />
     public override IStepFactory StepFactory { get; } =
-        new SimpleStepFactory<DirectoryExists, bool>();
+        new SimpleStepFactory<DirectoryExists, SCLBool>();
 }

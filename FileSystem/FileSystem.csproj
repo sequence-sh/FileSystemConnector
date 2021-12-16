@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -28,10 +28,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Reductech.EDR.Core" Version="0.13.0-a.main.2112101135">
+    <PackageReference Include="Reductech.EDR.Core" Version="0.13.0-a.main.2112161035">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
-    <PackageReference Include="System.IO.Abstractions" Version="14.0.3" />
+    <PackageReference Include="System.IO.Abstractions" Version="14.0.13" />
   </ItemGroup>
 
   <ItemGroup Condition="$(PackConnector) != ''">
@@ -39,7 +39,6 @@
     <None Include="..\LICENSE" Pack="true" PackagePath="\" />
     <None Include="..\NOTICE" Pack="true" PackagePath="\" />
   </ItemGroup>
-
   <PropertyGroup Condition="$(PackConnector) != ''">
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <PackageReadmeFile>README.md</PackageReadmeFile>

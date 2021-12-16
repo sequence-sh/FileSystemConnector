@@ -236,28 +236,28 @@ public class DirectoryGetItems : CompoundStep<Array<Entity>>
     [StepProperty(2)]
     [DefaultValueExplanation("No Pattern")]
     [Example("*.jpg")]
-    public IStep<StringStream> Pattern { get; set; } = new StringConstant("");
+    public IStep<StringStream> Pattern { get; set; } = new SCLConstant<StringStream>("");
 
     /// <summary>
     /// Whether to include files in the results
     /// </summary>
     [StepProperty(3)]
     [DefaultValueExplanation("true")]
-    public IStep<bool> IncludeFiles { get; set; } = new BoolConstant(true);
+    public IStep<SCLBool> IncludeFiles { get; set; } = new SCLConstant<SCLBool>(SCLBool.True);
 
     /// <summary>
     /// Whether to include directories in the results
     /// </summary>
     [StepProperty(4)]
     [DefaultValueExplanation("true")]
-    public IStep<bool> IncludeDirectories { get; set; } = new BoolConstant(true);
+    public IStep<SCLBool> IncludeDirectories { get; set; } = new SCLConstant<SCLBool>(SCLBool.True);
 
     /// <summary>
     /// Whether to search recursively
     /// </summary>
     [StepProperty(5)]
     [DefaultValueExplanation("true")]
-    public IStep<bool> Recursive { get; set; } = new BoolConstant(true);
+    public IStep<SCLBool> Recursive { get; set; } = new SCLConstant<SCLBool>(SCLBool.True);
 
     /// <inheritdoc />
     public override IStepFactory StepFactory { get; } =
