@@ -1,7 +1,7 @@
 ﻿namespace Reductech.EDR.Connectors.FileSystem.Tests
 {
 
-public partial class DirectoryExistsTests : StepTestBase<DirectoryExists, bool>
+public partial class DirectoryExistsTests : StepTestBase<DirectoryExists, SCLBool>
 {
     /// <inheritdoc />
     protected override IEnumerable<StepCase> StepCases
@@ -11,14 +11,14 @@ public partial class DirectoryExistsTests : StepTestBase<DirectoryExists, bool>
             yield return new StepCase(
                     "Directory Exists",
                     new DirectoryExists { Path = Constant("My Path") },
-                    true
+                    true.ConvertToSCLObject()
                 ).WithFileSystem(initialDirectories: new[] { "My Path" })
                 .WithExpectedFileSystem(expectedFinalDirectories: new[] { "My Path" });
 
             yield return new StepCase(
                     "Directory Does not exist",
                     new DirectoryExists { Path = Constant("My Path") },
-                    false
+                    false.ConvertToSCLObject()
                 ).WithFileSystem()
                 .WithExpectedFileSystem();
         }

@@ -6,7 +6,7 @@ namespace Reductech.EDR.Connectors.FileSystem;
 /// Returns whether a file on the file system exists.
 /// </summary>
 [Alias("DoesFileExist")]
-public class FileExists : CompoundStep<bool>
+public class FileExists : CompoundStep<SCLBool>
 {
     /// <summary>
     /// The path to the file to check.
@@ -18,7 +18,7 @@ public class FileExists : CompoundStep<bool>
     public IStep<StringStream> Path { get; set; } = null!;
 
     /// <inheritdoc />
-    protected override async Task<Result<bool, IError>> Run(
+    protected override async Task<Result<SCLBool, IError>> Run(
         IStateMonad stateMonad,
         CancellationToken cancellationToken)
     {
@@ -26,18 +26,18 @@ public class FileExists : CompoundStep<bool>
             .Map(async x => await x.GetStringAsync());
 
         if (pathResult.IsFailure)
-            return pathResult.ConvertFailure<bool>();
+            return pathResult.ConvertFailure<SCLBool>();
 
         var fileSystemResult =
             stateMonad.ExternalContext.TryGetContext<IFileSystem>(ConnectorInjection.FileSystemKey);
 
         if (fileSystemResult.IsFailure)
-            return fileSystemResult.MapError(x => x.WithLocation(this)).ConvertFailure<bool>();
+            return fileSystemResult.MapError(x => x.WithLocation(this)).ConvertFailure<SCLBool>();
 
         try
         {
             var r = fileSystemResult.Value.File.Exists(pathResult.Value);
-            return r;
+            return r.ConvertToSCLObject();
         }
         catch (Exception e)
         {
@@ -46,5 +46,6 @@ public class FileExists : CompoundStep<bool>
     }
 
     /// <inheritdoc />
-    public override IStepFactory StepFactory { get; } = new SimpleStepFactory<FileExists, bool>();
+    public override IStepFactory StepFactory { get; } =
+        new SimpleStepFactory<FileExists, SCLBool>();
 }

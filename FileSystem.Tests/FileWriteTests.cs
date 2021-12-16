@@ -34,7 +34,7 @@ public partial class FileWriteTests : StepTestBase<FileWrite, Unit>
                                 Stream   = Constant("Hello World"),
                                 Compress = Constant(true)
                             },
-                            new Log<StringStream>()
+                            new Log()
                             {
                                 Value = new FileRead()
                                 {

@@ -12,7 +12,7 @@ public partial class FileReadTests : StepTestBase<FileRead, StringStream>
         {
             yield return new StepCase(
                     "Log file text",
-                    new Log<StringStream> { Value = new FileRead { Path = Constant("File.txt"), } },
+                    new Log { Value = new FileRead { Path = Constant("File.txt"), } },
                     Unit.Default,
                     "Hello World"
                 ).WithFileSystem(initialFiles: new[] { ("File.txt", "Hello World") })
