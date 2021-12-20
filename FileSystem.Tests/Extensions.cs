@@ -6,8 +6,7 @@ using FluentAssertions;
 using Moq;
 using Reductech.Sequence.Core.Abstractions;
 
-namespace Reductech.Sequence.Connectors.FileSystem.Tests
-{
+namespace Reductech.Sequence.Connectors.FileSystem.Tests;
 
 public static class Extensions
 {
@@ -140,6 +139,4 @@ public static class Extensions
             return s;
         }
     }
-}
-
 }

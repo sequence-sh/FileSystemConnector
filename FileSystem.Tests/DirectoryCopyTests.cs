@@ -1,5 +1,4 @@
-﻿namespace Reductech.Sequence.Connectors.FileSystem.Tests
-{
+﻿namespace Reductech.Sequence.Connectors.FileSystem.Tests;
 
 public partial class DirectoryCopyTests : StepTestBase<DirectoryCopy, Unit>
 {
@@ -66,6 +65,4 @@ public partial class DirectoryCopyTests : StepTestBase<DirectoryCopy, Unit>
                 yield return ec;
         }
     }
-}
-
 }

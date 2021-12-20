@@ -1,5 +1,4 @@
-﻿namespace Reductech.Sequence.Connectors.FileSystem.Tests
-{
+﻿namespace Reductech.Sequence.Connectors.FileSystem.Tests;
 
 public partial class FileMoveTests : StepTestBase<FileMove, Unit>
 {
@@ -56,6 +55,4 @@ public partial class FileMoveTests : StepTestBase<FileMove, Unit>
                 yield return ec;
         }
     }
-}
-
 }

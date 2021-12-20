@@ -10,8 +10,7 @@ using Moq;
 using Reductech.Sequence.Core.Internal.Serialization;
 using Xunit.Abstractions;
 
-namespace Reductech.Sequence.Connectors.FileSystem.Tests
-{
+namespace Reductech.Sequence.Connectors.FileSystem.Tests;
 
 public partial class LoggingTests
 {
@@ -264,6 +263,4 @@ public partial class LoggingTests
         /// <inheritdoc />
         public List<Action> FinalChecks { get; } = new();
     }
-}
-
 }

@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Reductech.Sequence.Connectors.FileSystem.Tests
-{
+namespace Reductech.Sequence.Connectors.FileSystem.Tests;
 
 public class MetaTests : Core.TestHarness.MetaTestsBase
 {
@@ -10,6 +9,4 @@ public class MetaTests : Core.TestHarness.MetaTestsBase
 
     /// <inheritdoc />
     public override Assembly TestAssembly { get; } = Assembly.GetAssembly(typeof(MetaTests))!;
-}
-
 }
