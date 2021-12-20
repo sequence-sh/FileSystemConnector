@@ -1,7 +1,7 @@
-﻿using Reductech.EDR.Core.Enums;
-using Reductech.EDR.Core.Internal.Errors;
+﻿using Reductech.Sequence.Core.Enums;
+using Reductech.Sequence.Core.Internal.Errors;
 
-namespace Reductech.EDR.Connectors.FileSystem;
+namespace Reductech.Sequence.Connectors.FileSystem;
 
 /// <summary>
 /// Reads text from a file.

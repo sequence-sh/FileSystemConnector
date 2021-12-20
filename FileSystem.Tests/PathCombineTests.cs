@@ -1,7 +1,7 @@
 ﻿using System.IO;
-using Reductech.EDR.Core.Steps;
+using Reductech.Sequence.Core.Steps;
 
-namespace Reductech.EDR.Connectors.FileSystem.Tests
+namespace Reductech.Sequence.Connectors.FileSystem.Tests
 {
 
 public partial class PathCombineTests : StepTestBase<PathCombine, StringStream>

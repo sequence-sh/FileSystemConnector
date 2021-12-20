@@ -1,6 +1,6 @@
-﻿using Reductech.EDR.Core.Internal.Errors;
+﻿using Reductech.Sequence.Core.Internal.Errors;
 
-namespace Reductech.EDR.Connectors.FileSystem;
+namespace Reductech.Sequence.Connectors.FileSystem;
 
 /// <summary>
 /// Returns whether a file on the file system exists.

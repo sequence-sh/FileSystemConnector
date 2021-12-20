@@ -7,10 +7,10 @@ using FluentAssertions;
 using MELT;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Reductech.EDR.Core.Internal.Serialization;
+using Reductech.Sequence.Core.Internal.Serialization;
 using Xunit.Abstractions;
 
-namespace Reductech.EDR.Connectors.FileSystem.Tests
+namespace Reductech.Sequence.Connectors.FileSystem.Tests
 {
 
 public partial class LoggingTests
@@ -26,7 +26,7 @@ public partial class LoggingTests
                 LoggingTestCase(
                     "No Path to combine",
                     "Log (PathCombine [])",
-                    CheckMessageAndScope(LogLevel.Debug, "EDR Sequence Started", null),
+                    CheckMessageAndScope(LogLevel.Debug, "Sequence Started", null),
                     CheckMessageAndScope(
                         LogLevel.Trace,
                         new Regex("ConnectorSettings"),
@@ -72,13 +72,13 @@ public partial class LoggingTests
                         "Log Completed Successfully with Result: Unit",
                         new[] { "Log" }
                     ),
-                    CheckMessageAndScope(LogLevel.Debug, "EDR Sequence Completed", null)
+                    CheckMessageAndScope(LogLevel.Debug, "Sequence Completed", null)
                 ).WithFileSystem(currentDirectory: "/MyDir");
 
             yield return new LoggingTestCase(
                 "Unqualified Path to combine",
                 "Log (PathCombine ['File'])",
-                CheckMessageAndScope(LogLevel.Debug, "EDR Sequence Started", null),
+                CheckMessageAndScope(LogLevel.Debug, "Sequence Started", null),
                 CheckMessageAndScope(
                     LogLevel.Trace,
                     new Regex("ConnectorSettings"),
@@ -124,13 +124,13 @@ public partial class LoggingTests
                     "Log Completed Successfully with Result: Unit",
                     new[] { "Log" }
                 ),
-                CheckMessageAndScope(LogLevel.Debug, "EDR Sequence Completed", null)
+                CheckMessageAndScope(LogLevel.Debug, "Sequence Completed", null)
             ).WithFileSystem(currentDirectory: "/MyDir");
 
             yield return new LoggingTestCase(
                 "File Read",
                 "FileRead 'MyFile' | Log",
-                CheckMessageAndScope(LogLevel.Debug, "EDR Sequence Started", null),
+                CheckMessageAndScope(LogLevel.Debug, "Sequence Started", null),
                 CheckMessageAndScope(
                     LogLevel.Trace,
                     new Regex("ConnectorSettings"),
@@ -157,7 +157,7 @@ public partial class LoggingTests
                     "Log Completed Successfully with Result: Unit",
                     new[] { "Log" }
                 ),
-                CheckMessageAndScope(LogLevel.Debug, "EDR Sequence Completed", null)
+                CheckMessageAndScope(LogLevel.Debug, "Sequence Completed", null)
             ).WithFileSystem(initialFiles: new[] { ("MyFile", "MyData") });
         }
     }
@@ -174,8 +174,8 @@ public partial class LoggingTests
 
             var trueExpectedScopes =
                 expectedScopes is null
-                    ? new List<string>() { "EDR" }
-                    : expectedScopes.Prepend("EDR").ToList();
+                    ? new List<string>() { "Sequence" }
+                    : expectedScopes.Prepend("Sequence").ToList();
 
             entry.Scopes.Select(x => x.Message)
                 .Should()
@@ -195,8 +195,8 @@ public partial class LoggingTests
 
             var trueExpectedScopes =
                 expectedScopes is null
-                    ? new List<string>() { "EDR" }
-                    : expectedScopes.Prepend("EDR").ToList();
+                    ? new List<string>() { "Sequence" }
+                    : expectedScopes.Prepend("Sequence").ToList();
 
             entry.Scopes.Select(x => x.Message)
                 .Should()

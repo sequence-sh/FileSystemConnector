@@ -1,4 +1,4 @@
-﻿namespace Reductech.EDR.Connectors.FileSystem.Tests
+﻿namespace Reductech.Sequence.Connectors.FileSystem.Tests
 {
 
 public partial class FileExistsTests : StepTestBase<FileExists, SCLBool>

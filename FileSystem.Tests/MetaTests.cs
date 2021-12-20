@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Reductech.EDR.Connectors.FileSystem.Tests
+namespace Reductech.Sequence.Connectors.FileSystem.Tests
 {
 
 public class MetaTests : Core.TestHarness.MetaTestsBase

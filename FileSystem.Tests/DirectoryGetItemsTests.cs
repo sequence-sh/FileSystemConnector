@@ -1,7 +1,7 @@
 ﻿using System.IO.Abstractions.TestingHelpers;
 using System.Text.Json.Serialization;
 
-namespace Reductech.EDR.Connectors.FileSystem.Tests
+namespace Reductech.Sequence.Connectors.FileSystem.Tests
 {
 
 public partial class DirectoryGetItemsTests : StepTestBase<DirectoryGetItems, Array<Entity>>
