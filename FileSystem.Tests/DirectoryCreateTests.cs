@@ -1,5 +1,4 @@
-﻿namespace Reductech.EDR.Connectors.FileSystem.Tests
-{
+﻿namespace Reductech.Sequence.Connectors.FileSystem.Tests;
 
 public partial class DirectoryCreateTests : StepTestBase<DirectoryCreate, Unit>
 {
@@ -59,6 +58,4 @@ public partial class DirectoryCreateTests : StepTestBase<DirectoryCreate, Unit>
                 yield return ec;
         }
     }
-}
-
 }

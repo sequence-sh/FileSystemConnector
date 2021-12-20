@@ -1,8 +1,8 @@
 ﻿using System.Linq;
-using Reductech.EDR.Core.Internal.Errors;
-using Reductech.EDR.Core.Internal.Logging;
+using Reductech.Sequence.Core.Internal.Errors;
+using Reductech.Sequence.Core.Internal.Logging;
 
-namespace Reductech.EDR.Connectors.FileSystem;
+namespace Reductech.Sequence.Connectors.FileSystem;
 
 /// <summary>
 /// Combine Paths.

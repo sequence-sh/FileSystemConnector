@@ -1,5 +1,4 @@
-﻿namespace Reductech.EDR.Connectors.FileSystem.Tests
-{
+﻿namespace Reductech.Sequence.Connectors.FileSystem.Tests;
 
 public partial class DeleteItemTests : StepTestBase<DeleteItem, Unit>
 {
@@ -68,6 +67,4 @@ public partial class DeleteItemTests : StepTestBase<DeleteItem, Unit>
                 yield return ec;
         }
     }
-}
-
 }

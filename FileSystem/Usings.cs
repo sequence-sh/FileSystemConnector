@@ -1,10 +1,10 @@
 ﻿global using System;
 global using System.Collections.Generic;
 global using System.ComponentModel.DataAnnotations;
-global using Reductech.EDR.Core;
-global using Reductech.EDR.Core.Attributes;
-global using Reductech.EDR.Core.Internal;
-global using Reductech.EDR.Core.Util;
+global using Reductech.Sequence.Core;
+global using Reductech.Sequence.Core.Attributes;
+global using Reductech.Sequence.Core.Internal;
+global using Reductech.Sequence.Core.Util;
 global using System.IO;
 global using System.IO.Abstractions;
 global using System.Threading;

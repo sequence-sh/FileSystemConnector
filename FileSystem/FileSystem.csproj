@@ -4,22 +4,22 @@
     <TargetFramework>net6.0</TargetFramework>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <RootNamespace>Reductech.EDR.Connectors.FileSystem</RootNamespace>
-    <AssemblyName>Reductech.EDR.Connectors.FileSystem</AssemblyName>
+    <RootNamespace>Reductech.Sequence.Connectors.FileSystem</RootNamespace>
+    <AssemblyName>Reductech.Sequence.Connectors.FileSystem</AssemblyName>
     <Nullable>enable</Nullable>
     <Version>0.13.0$(VersionSuffix)</Version>
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>Reductech.EDR.Connectors.FileSystem</PackageId>
-    <Title>EDR FileSystem Connector</Title>
-    <Description>A class library for using FileSystem in EDR Sequences</Description>
-    <Product>EDR</Product>
-    <PackageTags>ediscovery;forensics;edrm;automation;orchestration</PackageTags>
+    <PackageId>Reductech.Sequence.Connectors.FileSystem</PackageId>
+    <Title>Sequence® FileSystem Connector</Title>
+    <Description>A class library for automating file system tasks using Sequence®</Description>
+    <Product>Sequence®</Product>
+    <PackageTags>ediscovery;forensics;edrm;automation;orchestration;sequence</PackageTags>
 
-    <PackageProjectUrl>https://gitlab.com/reductech/edr/connectors/filesystem</PackageProjectUrl>
-    <RepositoryUrl>https://gitlab.com/reductech/edr/connectors/filesystem</RepositoryUrl>
-    <PackageReleaseNotes>Please see https://gitlab.com/reductech/edr/connectors/filesystem/-/releases</PackageReleaseNotes>
+    <PackageProjectUrl>https://gitlab.com/reductech/sequence/connectors/filesystem</PackageProjectUrl>
+    <RepositoryUrl>https://gitlab.com/reductech/sequence/connectors/filesystem</RepositoryUrl>
+    <PackageReleaseNotes>Please see https://gitlab.com/reductech/sequence/connectors/filesystem/-/releases</PackageReleaseNotes>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 
     <Authors>Reductech</Authors>
@@ -28,7 +28,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Reductech.EDR.Core" Version="0.13.0-a.main.2112200210">
+    <PackageReference Include="Reductech.Sequence.Core" Version="0.13.0-a.main.2112201532">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="System.IO.Abstractions" Version="14.0.13" />

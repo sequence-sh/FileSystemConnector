@@ -1,5 +1,4 @@
-﻿namespace Reductech.EDR.Connectors.FileSystem.Tests
-{
+﻿namespace Reductech.Sequence.Connectors.FileSystem.Tests;
 
 public partial class DirectoryMoveTests : StepTestBase<DirectoryMove, Unit>
 {
@@ -56,6 +55,4 @@ public partial class DirectoryMoveTests : StepTestBase<DirectoryMove, Unit>
                 yield return ec;
         }
     }
-}
-
 }

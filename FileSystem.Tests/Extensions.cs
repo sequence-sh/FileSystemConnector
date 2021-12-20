@@ -4,10 +4,9 @@ using System.IO.Abstractions.TestingHelpers;
 using System.Linq;
 using FluentAssertions;
 using Moq;
-using Reductech.EDR.Core.Abstractions;
+using Reductech.Sequence.Core.Abstractions;
 
-namespace Reductech.EDR.Connectors.FileSystem.Tests
-{
+namespace Reductech.Sequence.Connectors.FileSystem.Tests;
 
 public static class Extensions
 {
@@ -140,6 +139,4 @@ public static class Extensions
             return s;
         }
     }
-}
-
 }

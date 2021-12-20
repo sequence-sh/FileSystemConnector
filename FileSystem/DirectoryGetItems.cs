@@ -1,8 +1,8 @@
 ﻿using System.Linq;
-using Reductech.EDR.Core.Internal.Errors;
-using Entity = Reductech.EDR.Core.Entity;
+using Reductech.Sequence.Core.Internal.Errors;
+using Entity = Reductech.Sequence.Core.Entity;
 
-namespace Reductech.EDR.Connectors.FileSystem;
+namespace Reductech.Sequence.Connectors.FileSystem;
 
 /// <summary>
 /// Gets all items in a directory
