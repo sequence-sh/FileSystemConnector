@@ -1,3 +1,12 @@
+# v0.13.0 (2022-01-16)
+
+## Issues Closed in this Release
+
+### Maintenance
+
+- Rename EDR to Sequence #33
+- Update Core to latest version #30
+
 # v0.12.0 (2021-11-26)
 
 Maintenance release - dependency updates only.
@@ -52,4 +61,5 @@ First release. Versions numbers are aligned with Core.
 
 - Enable publish to connector registry #2
 - Move in steps and tests from Core #1
+
 
