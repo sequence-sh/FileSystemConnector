@@ -1,11 +1,5 @@
-﻿using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using AutoTheory;
-using FluentAssertions;
-using MELT;
-using Microsoft.Extensions.Logging;
 using Moq;
 using Reductech.Sequence.Core.Internal.Serialization;
 using Xunit.Abstractions;
@@ -254,6 +248,9 @@ public partial class LoggingTests
 
             loggerFactory.Sink.LogEntries.Should().SatisfyRespectively(ExpectedLogs);
         }
+
+        /// <inheritdoc />
+        public Dictionary<VariableName, ISCLObject> InjectedVariables { get; } = new();
 
         /// <inheritdoc />
         public ExternalContextSetupHelper ExternalContextSetupHelper { get; } = new();
