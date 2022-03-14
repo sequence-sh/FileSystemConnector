@@ -105,6 +105,7 @@ public sealed class FileWrite : CompoundStep<Unit>
     [StepProperty(2)]
     [Required]
     [Log(LogOutputLevel.Trace)]
+    [Metadata("Path", "Write")]
     public IStep<StringStream> Path { get; set; } = null!;
 
     /// <summary>

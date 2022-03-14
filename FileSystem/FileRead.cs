@@ -65,6 +65,7 @@ public sealed class FileRead : CompoundStep<StringStream>
     [StepProperty(1)]
     [Required]
     [Log(LogOutputLevel.Trace)]
+    [Metadata("Path", "Read")]
     public IStep<StringStream> Path { get; set; } = null!;
 
     /// <summary>

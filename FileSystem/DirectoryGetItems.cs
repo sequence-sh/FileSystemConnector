@@ -228,6 +228,7 @@ public class DirectoryGetItems : CompoundStep<Array<Entity>>
     /// </summary>
     [StepProperty(1)]
     [Required]
+    [Metadata("Path", "Read")]
     public IStep<StringStream> Directory { get; set; } = null!;
 
     /// <summary>

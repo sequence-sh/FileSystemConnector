@@ -61,6 +61,7 @@ public class FileExtract : CompoundStep<Unit>
     [Required]
     [Alias("Container")]
     [Log(LogOutputLevel.Trace)]
+    [Metadata("Path", "Read")]
     public IStep<StringStream> ArchiveFilePath { get; set; } = null!;
 
     /// <summary>
@@ -70,6 +71,7 @@ public class FileExtract : CompoundStep<Unit>
     [Required]
     [Alias("ToDirectory")]
     [Log(LogOutputLevel.Trace)]
+    [Metadata("Path", "Write")]
     public IStep<StringStream> Destination { get; set; } = null!;
 
     /// <summary>

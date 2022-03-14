@@ -64,6 +64,7 @@ public sealed class PathCombine : CompoundStep<StringStream>
     /// </summary>
     [StepProperty(1)]
     [Required]
+    [Metadata("Path", "Combine")]
     public IStep<Array<StringStream>> Paths { get; set; } = null!;
 
     /// <inheritdoc />

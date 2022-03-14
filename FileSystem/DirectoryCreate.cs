@@ -45,6 +45,7 @@ public class DirectoryCreate : CompoundStep<Unit>
     /// </summary>
     [StepProperty(1)]
     [Required]
+    [Metadata("Path", "Write")]
     public IStep<StringStream> Path { get; set; } = null!;
 
     /// <inheritdoc />
