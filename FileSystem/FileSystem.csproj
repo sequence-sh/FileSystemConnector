@@ -28,10 +28,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Reductech.Sequence.Core" Version="0.14.0-a.main.2203140212">
+    <PackageReference Include="Reductech.Sequence.Core" Version="0.14.0-a.main.2203141351">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
-    <PackageReference Include="System.IO.Abstractions" Version="14.0.13" />
+    <PackageReference Include="System.IO.Abstractions" Version="16.1.23" />
   </ItemGroup>
 
   <ItemGroup Condition="$(PackConnector) != ''">
