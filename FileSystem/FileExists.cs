@@ -15,6 +15,7 @@ public class FileExists : CompoundStep<SCLBool>
     [Required]
     [Alias("File")]
     [Log(LogOutputLevel.Trace)]
+    [Metadata("Path", "Read")]
     public IStep<StringStream> Path { get; set; } = null!;
 
     /// <inheritdoc />

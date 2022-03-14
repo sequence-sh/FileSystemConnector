@@ -60,6 +60,7 @@ public class DirectoryCopy : CompoundStep<Unit>
     /// </summary>
     [StepProperty(1)]
     [Required]
+    [Metadata("Path", "Read")]
     public IStep<StringStream> SourceDirectory { get; set; } = null!;
 
     /// <summary>
@@ -67,6 +68,7 @@ public class DirectoryCopy : CompoundStep<Unit>
     /// </summary>
     [StepProperty(2)]
     [Required]
+    [Metadata("Path", "Write")]
     public IStep<StringStream> DestinationDirectory { get; set; } = null!;
 
     /// <summary>

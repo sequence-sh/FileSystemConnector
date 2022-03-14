@@ -14,6 +14,7 @@ public class DirectoryExists : CompoundStep<SCLBool>
     [StepProperty(1)]
     [Required]
     [Alias("Directory")]
+    [Metadata("Path", "Read")]
     public IStep<StringStream> Path { get; set; } = null!;
 
     /// <inheritdoc />

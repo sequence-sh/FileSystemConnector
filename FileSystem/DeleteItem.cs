@@ -59,6 +59,7 @@ public class DeleteItem : CompoundStep<Unit>
     [Required]
     [Alias("File")]
     [Alias("Folder")]
+    [Metadata("Path", "Write")]
     public IStep<StringStream> Path { get; set; } = null!;
 
     /// <inheritdoc />

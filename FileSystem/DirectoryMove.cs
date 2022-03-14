@@ -48,6 +48,7 @@ public class DirectoryMove : CompoundStep<Unit>
     [StepProperty(1)]
     [Required]
     [Alias("Source")]
+    [Metadata("Path", "Read")]
     public IStep<StringStream> SourceDirectory { get; set; } = null!;
 
     /// <summary>
@@ -56,6 +57,7 @@ public class DirectoryMove : CompoundStep<Unit>
     [StepProperty(2)]
     [Required]
     [Alias("Destination")]
+    [Metadata("Path", "Write")]
     public IStep<StringStream> DestinationDirectory { get; set; } = null!;
 
     /// <inheritdoc />

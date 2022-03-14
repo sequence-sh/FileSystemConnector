@@ -56,6 +56,7 @@ public class FileCopy : CompoundStep<Unit>
     /// </summary>
     [StepProperty(1)]
     [Required]
+    [Metadata("Path", "Read")]
     public IStep<StringStream> SourceFile { get; set; } = null!;
 
     /// <summary>
@@ -63,6 +64,7 @@ public class FileCopy : CompoundStep<Unit>
     /// </summary>
     [StepProperty(2)]
     [Required]
+    [Metadata("Path", "Write")]
     public IStep<StringStream> DestinationFile { get; set; } = null!;
 
     /// <summary>
