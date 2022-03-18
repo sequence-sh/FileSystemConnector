@@ -1,4 +1,6 @@
-﻿using Reductech.Sequence.Connectors.FileSystem.Steps;
+﻿using System.Text;
+using Reductech.Sequence.Connectors.FileSystem.Steps;
+using Reductech.Sequence.Core.Enums;
 using Reductech.Sequence.Core.Steps;
 
 namespace Reductech.Sequence.Connectors.FileSystem.Tests;
@@ -14,12 +16,26 @@ public partial class FileWriteTests : StepTestBase<FileWrite, Unit>
                     "Write file",
                     new FileWrite
                     {
-                        Path = Constant("Filename.txt"), Stream = Constant("Hello World")
+                        Path = Constant("Filename.txt"), Stream = Constant("Hello World 😀")
                     },
                     Unit.Default
                 ).WithFileSystem()
                 .WithExpectedFileSystem(
-                    expectedFinalFiles: new[] { ("/Filename.txt", "Hello World") }
+                    expectedFinalFiles: new[] { ("/Filename.txt", "Hello World 😀") }
+                );
+
+            yield return new StepCase(
+                    "Write file with encoding",
+                    new FileWrite
+                    {
+                        Path     = Constant("Filename.txt"),
+                        Stream   = Constant("Hello World 😀"),
+                        Encoding = Constant(EncodingEnum.UTF32)
+                    },
+                    Unit.Default
+                ).WithFileSystem()
+                .WithExpectedFileSystem(
+                    new[] { ("/Filename.txt", "Hello World 😀", Encoding.UTF32) }!
                 );
 
             yield return new StepCase(
