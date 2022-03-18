@@ -2,7 +2,7 @@
 using Reductech.Sequence.Core.Internal.Errors;
 using Entity = Reductech.Sequence.Core.Entity;
 
-namespace Reductech.Sequence.Connectors.FileSystem;
+namespace Reductech.Sequence.Connectors.FileSystem.Steps;
 
 /// <summary>
 /// Gets all items in a directory

@@ -1,6 +1,6 @@
 ﻿using Reductech.Sequence.Core.Internal.Errors;
 
-namespace Reductech.Sequence.Connectors.FileSystem;
+namespace Reductech.Sequence.Connectors.FileSystem.Steps;
 
 /// <summary>
 /// Extract a file in the file system.

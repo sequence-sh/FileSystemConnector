@@ -1,19 +1,20 @@
 ﻿using Reductech.Sequence.Core.Internal.Errors;
 
-namespace Reductech.Sequence.Connectors.FileSystem;
+namespace Reductech.Sequence.Connectors.FileSystem.Steps;
 
 /// <summary>
-/// Returns whether a directory on the file system exists.
+/// Returns whether a file on the file system exists.
 /// </summary>
-[Alias("DoesDirectoryExist")]
-public class DirectoryExists : CompoundStep<SCLBool>
+[Alias("DoesFileExist")]
+public class FileExists : CompoundStep<SCLBool>
 {
     /// <summary>
-    /// The path to the folder to check.
+    /// The path to the file to check.
     /// </summary>
     [StepProperty(1)]
     [Required]
-    [Alias("Directory")]
+    [Alias("File")]
+    [Log(LogOutputLevel.Trace)]
     [Metadata("Path", "Read")]
     public IStep<StringStream> Path { get; set; } = null!;
 
@@ -22,12 +23,11 @@ public class DirectoryExists : CompoundStep<SCLBool>
         IStateMonad stateMonad,
         CancellationToken cancellationToken)
     {
-        var pathResult = await Path.Run(stateMonad, cancellationToken);
+        var pathResult = await Path.Run(stateMonad, cancellationToken)
+            .Map(async x => await x.GetStringAsync());
 
         if (pathResult.IsFailure)
             return pathResult.ConvertFailure<SCLBool>();
-
-        var pathString = await pathResult.Value.GetStringAsync();
 
         var fileSystemResult =
             stateMonad.ExternalContext.TryGetContext<IFileSystem>(ConnectorInjection.FileSystemKey);
@@ -37,7 +37,7 @@ public class DirectoryExists : CompoundStep<SCLBool>
 
         try
         {
-            var r = fileSystemResult.Value.Directory.Exists(pathString);
+            var r = fileSystemResult.Value.File.Exists(pathResult.Value);
             return r.ConvertToSCLObject();
         }
         catch (Exception e)
@@ -48,5 +48,5 @@ public class DirectoryExists : CompoundStep<SCLBool>
 
     /// <inheritdoc />
     public override IStepFactory StepFactory { get; } =
-        new SimpleStepFactory<DirectoryExists, SCLBool>();
+        new SimpleStepFactory<FileExists, SCLBool>();
 }

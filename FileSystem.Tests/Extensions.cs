@@ -1,8 +1,7 @@
 ﻿using System.IO;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
-using System.Linq;
-using FluentAssertions;
+using System.Text;
 using Moq;
 using Reductech.Sequence.Core.Abstractions;
 
@@ -69,14 +68,16 @@ public static class Extensions
 
     public static T WithExpectedFileSystem<T>(
         this T cws,
-        IReadOnlyCollection<(string filename, string filetext)>? expectedFinalFiles = null,
+        IReadOnlyCollection<(string filename, string filetext, Encoding? encoding)>?
+            expectedFinalFiles,
         IReadOnlyCollection<string>? expectedFinalDirectories = null)
         where T : ICaseThatExecutes
     {
         cws = cws.WithFinalContextCheck(
             ec => CheckContext(
                 ec,
-                expectedFinalFiles ?? new List<(string filename, string filetext)>(),
+                expectedFinalFiles
+             ?? new List<(string filename, string filetext, Encoding? encoding)>(),
                 expectedFinalDirectories ?? new List<string>()
             )
         );
@@ -85,7 +86,8 @@ public static class Extensions
 
         static void CheckContext(
             IExternalContext externalContext,
-            IReadOnlyCollection<(string filename, string filetext)> expectedFinalFiles,
+            IReadOnlyCollection<(string filename, string filetext, Encoding? encoding)>
+                expectedFinalFiles,
             IReadOnlyCollection<string> expectedFinalDirectories)
         {
             var fs = externalContext.TryGetContext<IFileSystem>(ConnectorInjection.FileSystemKey);
@@ -104,9 +106,14 @@ public static class Extensions
             allActualFiles.Should()
                 .BeEquivalentTo(expectedFinalFiles.Select(x => x.filename).Select(NormalizePath));
 
-            foreach (var (expectedFilename, expectedFileText) in expectedFinalFiles)
+            foreach (var (expectedFilename, expectedFileText, encoding) in expectedFinalFiles)
             {
-                var actualText = fs.Value.File.ReadAllText(expectedFilename);
+                string actualText;
+
+                if (encoding is null)
+                    actualText = fs.Value.File.ReadAllText(expectedFilename);
+                else
+                    actualText = fs.Value.File.ReadAllText(expectedFilename, encoding);
 
                 actualText.Should()
                     .Be(
@@ -139,4 +146,15 @@ public static class Extensions
             return s;
         }
     }
+
+    public static T WithExpectedFileSystem<T>(
+        this T cws,
+        IReadOnlyCollection<(string filename, string filetext)>?
+            expectedFinalFiles = null,
+        IReadOnlyCollection<string>? expectedFinalDirectories = null)
+        where T : ICaseThatExecutes => WithExpectedFileSystem(
+        cws,
+        expectedFinalFiles?.Select(x => (x.filename, x.filetext, null as Encoding)).ToList(),
+        expectedFinalDirectories
+    );
 }

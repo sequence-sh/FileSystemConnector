@@ -1,20 +1,19 @@
 ﻿using Reductech.Sequence.Core.Internal.Errors;
 
-namespace Reductech.Sequence.Connectors.FileSystem;
+namespace Reductech.Sequence.Connectors.FileSystem.Steps;
 
 /// <summary>
-/// Returns whether a file on the file system exists.
+/// Returns whether a directory on the file system exists.
 /// </summary>
-[Alias("DoesFileExist")]
-public class FileExists : CompoundStep<SCLBool>
+[Alias("DoesDirectoryExist")]
+public class DirectoryExists : CompoundStep<SCLBool>
 {
     /// <summary>
-    /// The path to the file to check.
+    /// The path to the folder to check.
     /// </summary>
     [StepProperty(1)]
     [Required]
-    [Alias("File")]
-    [Log(LogOutputLevel.Trace)]
+    [Alias("Directory")]
     [Metadata("Path", "Read")]
     public IStep<StringStream> Path { get; set; } = null!;
 
@@ -23,11 +22,12 @@ public class FileExists : CompoundStep<SCLBool>
         IStateMonad stateMonad,
         CancellationToken cancellationToken)
     {
-        var pathResult = await Path.Run(stateMonad, cancellationToken)
-            .Map(async x => await x.GetStringAsync());
+        var pathResult = await Path.Run(stateMonad, cancellationToken);
 
         if (pathResult.IsFailure)
             return pathResult.ConvertFailure<SCLBool>();
+
+        var pathString = await pathResult.Value.GetStringAsync();
 
         var fileSystemResult =
             stateMonad.ExternalContext.TryGetContext<IFileSystem>(ConnectorInjection.FileSystemKey);
@@ -37,7 +37,7 @@ public class FileExists : CompoundStep<SCLBool>
 
         try
         {
-            var r = fileSystemResult.Value.File.Exists(pathResult.Value);
+            var r = fileSystemResult.Value.Directory.Exists(pathString);
             return r.ConvertToSCLObject();
         }
         catch (Exception e)
@@ -48,5 +48,5 @@ public class FileExists : CompoundStep<SCLBool>
 
     /// <inheritdoc />
     public override IStepFactory StepFactory { get; } =
-        new SimpleStepFactory<FileExists, SCLBool>();
+        new SimpleStepFactory<DirectoryExists, SCLBool>();
 }

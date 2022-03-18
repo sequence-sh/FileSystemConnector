@@ -1,4 +1,6 @@
-﻿namespace Reductech.Sequence.Connectors.FileSystem.Tests;
+﻿using Reductech.Sequence.Connectors.FileSystem.Steps;
+
+namespace Reductech.Sequence.Connectors.FileSystem.Tests;
 
 public partial class DirectoryCreateTests : StepTestBase<DirectoryCreate, Unit>
 {

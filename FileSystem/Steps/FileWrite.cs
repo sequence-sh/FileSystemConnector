@@ -1,6 +1,8 @@
-﻿using Reductech.Sequence.Core.Internal.Errors;
+﻿using System.Text;
+using Reductech.Sequence.Core.Enums;
+using Reductech.Sequence.Core.Internal.Errors;
 
-namespace Reductech.Sequence.Connectors.FileSystem;
+namespace Reductech.Sequence.Connectors.FileSystem.Steps;
 
 /// <summary>
 /// Writes a file to the local file system.
@@ -13,23 +15,20 @@ public sealed class FileWrite : CompoundStep<Unit>
         IStateMonad stateMonad,
         CancellationToken cancellationToken)
     {
-        var path = await Path.Run(stateMonad, cancellationToken)
-            .Map(async x => await x.GetStringAsync());
+        var argsResult = await stateMonad.RunStepsAsync(
+            Path.WrapStringStream(),
+            Stream,
+            Compress,
+            Encoding,
+            cancellationToken
+        );
 
-        if (path.IsFailure)
-            return path.ConvertFailure<Unit>();
+        if (argsResult.IsFailure)
+            return argsResult.ConvertFailure<Unit>();
 
-        var stringStreamResult = await Stream.Run(stateMonad, cancellationToken);
+        var (path, stringStream, compress, writeEncoding) = argsResult.Value;
 
-        if (stringStreamResult.IsFailure)
-            return stringStreamResult.ConvertFailure<Unit>();
-
-        var compressResult = await Compress.Run(stateMonad, cancellationToken);
-
-        if (compressResult.IsFailure)
-            return compressResult.ConvertFailure<Unit>();
-
-        var stream = stringStreamResult.Value.GetStream().stream;
+        var (stream, readEncoding) = stringStream.GetStream();
 
         var fileSystemResult =
             stateMonad.ExternalContext.TryGetContext<IFileSystem>(ConnectorInjection.FileSystemKey);
@@ -40,9 +39,11 @@ public sealed class FileWrite : CompoundStep<Unit>
 
         var r = await WriteFileAsync(
                 fileSystemResult.Value,
-                path.Value,
+                path,
                 stream,
-                compressResult.Value,
+                readEncoding.Convert(),
+                writeEncoding.Value.Convert(),
+                compress.Value,
                 cancellationToken
             )
             .MapError(x => x.WithLocation(this));
@@ -56,6 +57,8 @@ public sealed class FileWrite : CompoundStep<Unit>
         IFileSystem fileSystem,
         string path,
         Stream stream,
+        Encoding readEncoding,
+        Encoding writeEncoding,
         bool compress,
         CancellationToken cancellationToken)
     {
@@ -74,7 +77,16 @@ public sealed class FileWrite : CompoundStep<Unit>
                     );
             }
 
-            await stream.CopyToAsync(writeStream, cancellationToken);
+            var readStream = stream;
+
+            if (!readEncoding.Equals(writeEncoding))
+                readStream = System.Text.Encoding.CreateTranscodingStream(
+                    readStream,
+                    readEncoding,
+                    writeEncoding
+                );
+
+            await readStream.CopyToAsync(writeStream, cancellationToken);
             writeStream.Close();
             error = Maybe<IErrorBuilder>.None;
         }
@@ -114,6 +126,14 @@ public sealed class FileWrite : CompoundStep<Unit>
     [StepProperty(3)]
     [DefaultValueExplanation("false")]
     public IStep<SCLBool> Compress { get; set; } = new SCLConstant<SCLBool>(SCLBool.False);
+
+    /// <summary>
+    /// The encoding to use to write the file
+    /// </summary>
+    [StepProperty(4)]
+    [DefaultValueExplanation("UTF8 no BOM")]
+    public IStep<SCLEnum<EncodingEnum>> Encoding { get; set; } =
+        new SCLConstant<SCLEnum<EncodingEnum>>(new SCLEnum<EncodingEnum>(EncodingEnum.UTF8));
 
     /// <inheritdoc />
     public override IStepFactory StepFactory { get; } = new SimpleStepFactory<FileWrite, Unit>();
