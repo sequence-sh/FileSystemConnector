@@ -2,7 +2,7 @@
 using Reductech.Sequence.Core.Internal.Errors;
 using Reductech.Sequence.Core.Internal.Logging;
 
-namespace Reductech.Sequence.Connectors.FileSystem;
+namespace Reductech.Sequence.Connectors.FileSystem.Steps;
 
 /// <summary>
 /// Combine Paths.

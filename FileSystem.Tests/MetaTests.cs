@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Reductech.Sequence.Connectors.FileSystem.Steps;
 
 namespace Reductech.Sequence.Connectors.FileSystem.Tests;
 

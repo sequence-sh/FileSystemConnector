@@ -1,33 +1,28 @@
 ﻿using Reductech.Sequence.Core.Internal.Errors;
 
-namespace Reductech.Sequence.Connectors.FileSystem;
+namespace Reductech.Sequence.Connectors.FileSystem.Steps;
 
 /// <summary>
-/// Copy a file
+/// Move a directory
 /// </summary>
-public class FileCopy : CompoundStep<Unit>
+public class DirectoryMove : CompoundStep<Unit>
 {
     /// <inheritdoc />
     protected override async Task<Result<Unit, IError>> Run(
         IStateMonad stateMonad,
         CancellationToken cancellationToken)
     {
-        var source = await SourceFile.Run(stateMonad, cancellationToken)
+        var source = await SourceDirectory.Run(stateMonad, cancellationToken)
             .Map(x => x.GetStringAsync());
 
         if (source.IsFailure)
             return source.ConvertFailure<Unit>();
 
-        var destination = await DestinationFile.Run(stateMonad, cancellationToken)
+        var destination = await DestinationDirectory.Run(stateMonad, cancellationToken)
             .Map(x => x.GetStringAsync());
 
         if (destination.IsFailure)
             return destination.ConvertFailure<Unit>();
-
-        var overwrite = await Overwrite.Run(stateMonad, cancellationToken);
-
-        if (overwrite.IsFailure)
-            return overwrite.ConvertFailure<Unit>();
 
         var fileSystemResult =
             stateMonad.ExternalContext.TryGetContext<IFileSystem>(ConnectorInjection.FileSystemKey);
@@ -37,11 +32,7 @@ public class FileCopy : CompoundStep<Unit>
 
         try
         {
-            fileSystemResult.Value.File.Copy(
-                source.Value,
-                destination.Value,
-                overwrite.Value
-            );
+            fileSystemResult.Value.Directory.Move(source.Value, destination.Value);
         }
         catch (Exception e)
         {
@@ -52,28 +43,24 @@ public class FileCopy : CompoundStep<Unit>
     }
 
     /// <summary>
-    /// The source file name
+    /// The source directory name
     /// </summary>
     [StepProperty(1)]
     [Required]
+    [Alias("Source")]
     [Metadata("Path", "Read")]
-    public IStep<StringStream> SourceFile { get; set; } = null!;
+    public IStep<StringStream> SourceDirectory { get; set; } = null!;
 
     /// <summary>
-    /// The destination file name
+    /// The destination directory name
     /// </summary>
     [StepProperty(2)]
     [Required]
+    [Alias("Destination")]
     [Metadata("Path", "Write")]
-    public IStep<StringStream> DestinationFile { get; set; } = null!;
-
-    /// <summary>
-    /// True if the destination file can be overwritten
-    /// </summary>
-    [StepProperty(3)]
-    [DefaultValueExplanation("false")]
-    public IStep<SCLBool> Overwrite { get; set; } = new SCLConstant<SCLBool>(SCLBool.False);
+    public IStep<StringStream> DestinationDirectory { get; set; } = null!;
 
     /// <inheritdoc />
-    public override IStepFactory StepFactory { get; } = new SimpleStepFactory<FileCopy, Unit>();
+    public override IStepFactory StepFactory { get; } =
+        new SimpleStepFactory<DirectoryMove, Unit>();
 }

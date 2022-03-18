@@ -1,5 +1,6 @@
 ﻿using System.IO.Abstractions.TestingHelpers;
 using System.Text.Json.Serialization;
+using Reductech.Sequence.Connectors.FileSystem.Steps;
 
 namespace Reductech.Sequence.Connectors.FileSystem.Tests;
 

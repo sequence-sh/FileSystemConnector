@@ -1,6 +1,6 @@
 ﻿using Reductech.Sequence.Core.Internal.Errors;
 
-namespace Reductech.Sequence.Connectors.FileSystem;
+namespace Reductech.Sequence.Connectors.FileSystem.Steps;
 
 /// <summary>
 /// Writes a file to the local file system.

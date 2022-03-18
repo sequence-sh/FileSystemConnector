@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
+using Reductech.Sequence.Connectors.FileSystem.Steps;
 using Reductech.Sequence.Core.Abstractions;
 using Reductech.Sequence.Core.Internal.Parser;
 using Reductech.Sequence.Core.Internal.Serialization;
