@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Moq;
 using Reductech.Sequence.Connectors.FileSystem.Steps;
 using Reductech.Sequence.Core.Internal.Serialization;
+using Reductech.Sequence.Core.TestHarness.Rest;
 using Xunit.Abstractions;
 
 namespace Reductech.Sequence.Connectors.FileSystem.Tests;
