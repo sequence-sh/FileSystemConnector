@@ -27,6 +27,10 @@ Write to a file
 - FileWrite Stream: "Hello World" Path: "Filename.txt"
 ```
 
+# Documentation
+
+Documentation available at https://sequence.sh
+
 # Releases
 
 Can be downloaded from the [Releases page](https://gitlab.com/reductech/sequence/connectors/filesystem/-/releases).

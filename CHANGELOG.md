@@ -1,3 +1,14 @@
+# v0.14.0 (2022-03-25)
+
+Encoding can now be specified when using `FileWrite`.
+
+## Issues Closed in this Release
+
+### New Features
+
+- Add Encoding parameter for FileWrite #44
+- Add Security Attributes to Path parameters of Steps #57
+
 # v0.13.0 (2022-01-16)
 
 EDR is now Sequence. The following has changed:
@@ -72,5 +83,6 @@ First release. Versions numbers are aligned with Core.
 
 - Enable publish to connector registry #2
 - Move in steps and tests from Core #1
+
 
 
