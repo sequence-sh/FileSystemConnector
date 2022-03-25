@@ -1,5 +1,7 @@
 # v0.14.0 (2022-03-25)
 
+Encoding can now be specified when using `FileWrite`.
+
 ## Issues Closed in this Release
 
 ### New Features
