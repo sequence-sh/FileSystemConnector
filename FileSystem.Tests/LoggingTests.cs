@@ -29,7 +29,7 @@ public partial class LoggingTests
                     ),
                     CheckMessageAndScope(
                         LogLevel.Trace,
-                        "Log Started with Parameters: [Value, (PathCombine Paths: [])]",
+                        "Log Started with Parameters: [Value, (PathCombine Paths: [])], [Severity, Severity.Information]",
                         new[] { "Log" }
                     ),
                     CheckMessageAndScope(
@@ -81,7 +81,7 @@ public partial class LoggingTests
                 ),
                 CheckMessageAndScope(
                     LogLevel.Trace,
-                    "Log Started with Parameters: [Value, (PathCombine Paths: [string Length: 4])]",
+                    "Log Started with Parameters: [Value, (PathCombine Paths: [string Length: 4])], [Severity, Severity.Information]",
                     new[] { "Log" }
                 ),
                 CheckMessageAndScope(
@@ -133,7 +133,7 @@ public partial class LoggingTests
                 ),
                 CheckMessageAndScope(
                     LogLevel.Trace,
-                    "Log Started with Parameters: [Value, (FileRead Path: string Length: 6 Encoding: EncodingEnum.UTF8 Decompress: False)]",
+                    "Log Started with Parameters: [Value, (FileRead Path: string Length: 6 Encoding: EncodingEnum.UTF8 Decompress: False)], [Severity, Severity.Information]",
                     new[] { "Log" }
                 ),
                 CheckMessageAndScope(
