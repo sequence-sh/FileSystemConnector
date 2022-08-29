@@ -1,3 +1,7 @@
+# v0.17.0 (2022-08-29)
+
+Maintenance release - dependency updates only.
+
 # v0.16.0 (2022-07-13)
 
 - Enabled [Source Link](https://docs.microsoft.com/en-us/dotnet/standard/library-guidance/sourcelink)
@@ -93,3 +97,4 @@ First release. Versions numbers are aligned with Core.
 
 - Enable publish to connector registry #2
 - Move in steps and tests from Core #1
+
