@@ -252,7 +252,7 @@ public partial class LoggingTests
         }
 
         /// <inheritdoc />
-        public Dictionary<VariableName, ISCLObject> InjectedVariables { get; } = new();
+        public Dictionary<VariableName, InjectedVariable> InjectedVariables { get; } = new();
 
         /// <inheritdoc />
         public ExternalContextSetupHelper ExternalContextSetupHelper { get; } = new();
