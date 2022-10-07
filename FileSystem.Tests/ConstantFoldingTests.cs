@@ -30,7 +30,7 @@ public class ConstantFoldingTests
             )
             .Value;
 
-        var variables = new Dictionary<VariableName, ISCLObject>();
+        var variables = new Dictionary<VariableName, InjectedVariable>();
 
         var parseResult = SCLParsing
             .TryParseStep(scl)
@@ -46,7 +46,10 @@ public class ConstantFoldingTests
                 .Single(x => x.Parameter.Metadata.ContainsKey("Path"))
                 .Value;
 
-        var pvv = await pathValue.TryGetConstantValueAsync(variables, sfs);
+        var pvv = await pathValue.TryGetConstantValueAsync(
+            variables.ToDictionary(x => x.Key, x => x.Value.SCLObject),
+            sfs
+        );
 
         pvv.ShouldHaveValue();
 
