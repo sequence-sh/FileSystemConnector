@@ -11,7 +11,7 @@ namespace Reductech.Sequence.Connectors.FileSystem.Steps;
 public sealed class FileWrite : CompoundStep<Unit>
 {
     /// <inheritdoc />
-    protected override async Task<Result<Unit, IError>> Run(
+    protected override async ValueTask<Result<Unit, IError>> Run(
         IStateMonad stateMonad,
         CancellationToken cancellationToken)
     {

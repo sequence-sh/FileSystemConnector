@@ -12,3 +12,4 @@ global using FluentAssertions;
 global using MELT;
 global using Microsoft.Extensions.Logging;
 global using static Reductech.Sequence.Core.TestHarness.StaticHelpers;
+global using CSharpFunctionalExtensions.ValueTasks;

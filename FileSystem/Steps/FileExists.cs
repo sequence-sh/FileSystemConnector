@@ -19,7 +19,7 @@ public class FileExists : CompoundStep<SCLBool>
     public IStep<StringStream> Path { get; set; } = null!;
 
     /// <inheritdoc />
-    protected override async Task<Result<SCLBool, IError>> Run(
+    protected override async ValueTask<Result<SCLBool, IError>> Run(
         IStateMonad stateMonad,
         CancellationToken cancellationToken)
     {
