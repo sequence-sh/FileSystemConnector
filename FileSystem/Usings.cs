@@ -10,3 +10,4 @@ global using System.IO.Abstractions;
 global using System.Threading;
 global using System.Threading.Tasks;
 global using CSharpFunctionalExtensions;
+global using CSharpFunctionalExtensions.ValueTasks;

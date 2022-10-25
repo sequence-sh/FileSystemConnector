@@ -34,7 +34,13 @@ public class ConstantFoldingTests
 
         var parseResult = SCLParsing
             .TryParseStep(scl)
-            .Bind(x => x.TryFreeze(SCLRunner.RootCallerMetadata, sfs, variables));
+            .Bind(
+                x => x.TryFreeze(
+                    SCLRunner.RootCallerMetadata,
+                    sfs,
+                    new OptimizationSettings(false, false, variables)
+                )
+            );
 
         parseResult.ShouldBeSuccessful();
 
