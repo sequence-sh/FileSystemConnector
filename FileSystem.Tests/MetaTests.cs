@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
-using Reductech.Sequence.Connectors.FileSystem.Steps;
+using Sequence.Connectors.FileSystem.Steps;
 
-namespace Reductech.Sequence.Connectors.FileSystem.Tests;
+namespace Sequence.Connectors.FileSystem.Tests;
 
 public class MetaTests : Core.TestHarness.MetaTestsBase
 {

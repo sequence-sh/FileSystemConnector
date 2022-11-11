@@ -1,8 +1,8 @@
 ﻿using System.Linq;
-using Reductech.Sequence.Core.Internal.Errors;
-using Reductech.Sequence.Core.Internal.Logging;
+using Sequence.Core.Internal.Errors;
+using Sequence.Core.Internal.Logging;
 
-namespace Reductech.Sequence.Connectors.FileSystem.Steps;
+namespace Sequence.Connectors.FileSystem.Steps;
 
 /// <summary>
 /// Combine Paths.

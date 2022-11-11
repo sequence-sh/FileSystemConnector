@@ -1,9 +1,9 @@
 ﻿using System.Text;
-using Reductech.Sequence.Connectors.FileSystem.Steps;
-using Reductech.Sequence.Core.Enums;
-using Reductech.Sequence.Core.Steps;
+using Sequence.Connectors.FileSystem.Steps;
+using Sequence.Core.Enums;
+using Sequence.Core.Steps;
 
-namespace Reductech.Sequence.Connectors.FileSystem.Tests;
+namespace Sequence.Connectors.FileSystem.Tests;
 
 public partial class FileWriteTests : StepTestBase<FileWrite, Unit>
 {

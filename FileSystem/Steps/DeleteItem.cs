@@ -1,7 +1,7 @@
-﻿using Reductech.Sequence.Core.Internal.Errors;
-using Reductech.Sequence.Core.Internal.Logging;
+﻿using Sequence.Core.Internal.Errors;
+using Sequence.Core.Internal.Logging;
 
-namespace Reductech.Sequence.Connectors.FileSystem.Steps;
+namespace Sequence.Connectors.FileSystem.Steps;
 
 /// <summary>
 /// Deletes a file or folder from the file system.

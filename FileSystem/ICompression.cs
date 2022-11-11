@@ -1,4 +1,4 @@
-﻿namespace Reductech.Sequence.Connectors.FileSystem;
+﻿namespace Sequence.Connectors.FileSystem;
 
 /// <summary>
 /// Abstraction layer for System.IO.Compression

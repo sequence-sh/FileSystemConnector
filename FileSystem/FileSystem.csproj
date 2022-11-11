@@ -4,26 +4,26 @@
     <TargetFramework>net6.0</TargetFramework>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <RootNamespace>Reductech.Sequence.Connectors.FileSystem</RootNamespace>
-    <AssemblyName>Reductech.Sequence.Connectors.FileSystem</AssemblyName>
+    <RootNamespace>Sequence.Connectors.FileSystem</RootNamespace>
+    <AssemblyName>Sequence.Connectors.FileSystem</AssemblyName>
     <Nullable>enable</Nullable>
     <Version>0.18.0$(VersionSuffix)</Version>
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>Reductech.Sequence.Connectors.FileSystem</PackageId>
+    <PackageId>Sequence.Connectors.FileSystem</PackageId>
     <Title>Sequence® FileSystem Connector</Title>
     <Description>Sequence® Connector with steps to interact with the file system.</Description>
     <Product>Sequence®</Product>
     <PackageTags>ediscovery;forensics;edrm;automation;orchestration;sequence;filesystem</PackageTags>
 
     <PackageProjectUrl>https://sequence.sh</PackageProjectUrl>
-    <RepositoryUrl>https://gitlab.com/reductech/sequence/connectors/filesystem.git</RepositoryUrl>
-    <PackageReleaseNotes>https://gitlab.com/reductech/sequence/connectors/filesystem/-/blob/main/CHANGELOG.md</PackageReleaseNotes>
+    <RepositoryUrl>https://gitlab.com/sequence/connectors/filesystem.git</RepositoryUrl>
+    <PackageReleaseNotes>https://gitlab.com/sequence/connectors/filesystem/-/blob/main/CHANGELOG.md</PackageReleaseNotes>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
 
-    <Authors>Reductech</Authors>
+    <Authors>MarkWainwright;antonyoni</Authors>
     <Company>Reductech</Company>
     <Copyright>Copyright (c) 2022 Reductech Ltd</Copyright>
   </PropertyGroup>
@@ -53,7 +53,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Reductech.Sequence.Core" Version="0.18.0-a.main.2211070211">
+    <PackageReference Include="Sequence.Core" Version="0.18.0-a.main.2211102318">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="System.IO.Abstractions" Version="17.2.3" />
