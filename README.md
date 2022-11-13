@@ -41,7 +41,7 @@ https://sequence.sh/playground
 
 # Package Releases
 
-Can be downloaded from the [Releases page](https://gitlab.com/reductech/sequence/connectors/filesystem/-/releases).
+Can be downloaded from the [Releases page](https://gitlab.com/sequence/connectors/filesystem/-/releases).
 
 # NuGet Packages
 

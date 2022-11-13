@@ -1,5 +1,5 @@
 include:
-  - project: reductech/templates/cicd/dotnet
+  - project: sequence/templates/cicd
     file: .gitlab-ci.linux.yml
 
 variables:

@@ -1,6 +1,6 @@
-﻿using Reductech.Sequence.Connectors.FileSystem.Steps;
+﻿using Sequence.Connectors.FileSystem.Steps;
 
-namespace Reductech.Sequence.Connectors.FileSystem.Tests;
+namespace Sequence.Connectors.FileSystem.Tests;
 
 public partial class DeleteItemTests : StepTestBase<DeleteItem, Unit>
 {

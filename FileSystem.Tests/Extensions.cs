@@ -3,9 +3,9 @@ using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Text;
 using Moq;
-using Reductech.Sequence.Core.Abstractions;
+using Sequence.Core.Abstractions;
 
-namespace Reductech.Sequence.Connectors.FileSystem.Tests;
+namespace Sequence.Connectors.FileSystem.Tests;
 
 public static class Extensions
 {

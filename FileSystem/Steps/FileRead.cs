@@ -1,7 +1,7 @@
-﻿using Reductech.Sequence.Core.Enums;
-using Reductech.Sequence.Core.Internal.Errors;
+﻿using Sequence.Core.Enums;
+using Sequence.Core.Internal.Errors;
 
-namespace Reductech.Sequence.Connectors.FileSystem.Steps;
+namespace Sequence.Connectors.FileSystem.Steps;
 
 /// <summary>
 /// Reads text from a file.

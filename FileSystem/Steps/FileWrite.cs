@@ -1,8 +1,8 @@
 ﻿using System.Text;
-using Reductech.Sequence.Core.Enums;
-using Reductech.Sequence.Core.Internal.Errors;
+using Sequence.Core.Enums;
+using Sequence.Core.Internal.Errors;
 
-namespace Reductech.Sequence.Connectors.FileSystem.Steps;
+namespace Sequence.Connectors.FileSystem.Steps;
 
 /// <summary>
 /// Writes a file to the local file system.

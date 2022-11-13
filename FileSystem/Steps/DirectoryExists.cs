@@ -1,6 +1,6 @@
-﻿using Reductech.Sequence.Core.Internal.Errors;
+﻿using Sequence.Core.Internal.Errors;
 
-namespace Reductech.Sequence.Connectors.FileSystem.Steps;
+namespace Sequence.Connectors.FileSystem.Steps;
 
 /// <summary>
 /// Returns whether a directory on the file system exists.

@@ -6,20 +6,20 @@
     <IsPublishable>false</IsPublishable>
     <IsTestProject>true</IsTestProject>
     <Nullable>enable</Nullable>
-    <RootNamespace>Reductech.Sequence.Connectors.FileSystem.Tests</RootNamespace>
+    <RootNamespace>Sequence.Connectors.FileSystem.Tests</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup>
-    <RepositoryUrl>https://gitlab.com/reductech/sequence/connectors/filesystem.git</RepositoryUrl>
+    <RepositoryUrl>https://gitlab.com/sequence/connectors/filesystem.git</RepositoryUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <Authors>Reductech</Authors>
+    <Authors>MarkWainwright;antonyoni</Authors>
     <Company>Reductech</Company>
     <Copyright>Copyright (c) 2022 Reductech Ltd</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
-    <PackageReference Include="Reductech.Sequence.Core.TestHarness" Version="0.18.0-a.main.2211070211" />
+    <PackageReference Include="Sequence.Core.TestHarness" Version="0.18.0-a.main.2211102318" />
     <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="17.2.3" />
     <PackageReference Include="xunit" Version="2.4.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">

@@ -1,14 +1,14 @@
 ﻿using System.Reflection;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
-using Reductech.Sequence.Connectors.FileSystem.Steps;
-using Reductech.Sequence.Core.Abstractions;
-using Reductech.Sequence.Core.Internal.Parser;
-using Reductech.Sequence.Core.Internal.Serialization;
+using Sequence.Connectors.FileSystem.Steps;
+using Sequence.Core.Abstractions;
+using Sequence.Core.Internal.Parser;
+using Sequence.Core.Internal.Serialization;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Reductech.Sequence.Connectors.FileSystem.Tests;
+namespace Sequence.Connectors.FileSystem.Tests;
 
 public class ConstantFoldingTests
 {
