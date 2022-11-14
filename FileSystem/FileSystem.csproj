@@ -12,8 +12,8 @@
 
   <PropertyGroup>
     <PackageId>Sequence.Connectors.FileSystem</PackageId>
-    <Title>Sequence® FileSystem Connector</Title>
-    <Description>Sequence® Connector with steps to interact with the file system.</Description>
+    <Title>Sequence FileSystem Connector</Title>
+    <Description>Sequence Connector with steps to interact with the file system.</Description>
     <Product>Sequence®</Product>
     <PackageTags>ediscovery;forensics;edrm;automation;orchestration;sequence;filesystem</PackageTags>
 
